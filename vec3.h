@@ -7,14 +7,13 @@ class Vec3
 public:
     Vec3() : e{} {};
     Vec3(float e0, float e1, float e2) : e{ e0, e1, e2 } {}
-    Vec3(const Vec3& v) : e(v.e) {}
     
     inline float x() const { return e[0]; }
     inline float y() const { return e[1]; }
     inline float z() const { return e[2]; }
-    inline float r() const { return e[0]; }
-    inline float g() const { return e[1]; }
-    inline float b() const { return e[2]; }
+    inline float r() const { return x(); }
+    inline float g() const { return y(); }
+    inline float b() const { return z(); }
 
     inline const Vec3& operator+() const { return *this; }
     inline Vec3 operator-() const { return Vec3(-e[0], -e[1], -e[2]); }

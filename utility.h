@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vec3.h"
+
 // Packed attribute
 //
 #if defined(__GNUC__) // __GNUG__
@@ -11,3 +13,7 @@
 #   error "Cannot determine packed attribute: unknown compiler"
 #endif
 #endif
+
+Vec3 lerp(const Vec3& start, const Vec3& end, float t) {
+    return (1.0f - t) * start + t * end;
+}
