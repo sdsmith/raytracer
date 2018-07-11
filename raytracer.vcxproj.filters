@@ -45,7 +45,10 @@
     <ClInclude Include="lambertian.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="behaviour.h">
+    <ClInclude Include="dielectric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,7 +68,7 @@
     <ClCompile Include="utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="behaviour.cpp">
+    <ClCompile Include="light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

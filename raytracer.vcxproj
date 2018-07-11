@@ -147,8 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="behaviour.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="dielectric.h" />
     <ClInclude Include="hitable.h" />
     <ClInclude Include="hitable_list.h" />
     <ClInclude Include="material.h" />
@@ -160,7 +161,7 @@
     <ClInclude Include="vec3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="behaviour.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="hitable_list.cpp" />
     <ClCompile Include="raytracer.cpp" />

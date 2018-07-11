@@ -1,6 +1,6 @@
 #pragma once
 
-#include "behaviour.h"
+#include "light.h"
 #include "material.h"
 
 class Metal : public Material
