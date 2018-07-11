@@ -14,6 +14,8 @@
 #endif
 #endif
 
-Vec3 lerp(const Vec3& start, const Vec3& end, float t) {
-    return (1.0f - t) * start + t * end;
-}
+Vec3 lerp(const Vec3& start, const Vec3& end, float t);
+
+float rand_normalized();
+
+Vec3 rand_in_unit_sphere();

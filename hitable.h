@@ -1,11 +1,15 @@
 #pragma once
 
+#include "material.h"
 #include "ray.h"
 
+class Material;
+
 struct Hit_Record {
-    float t;
+    float t = 0.0f;
     Vec3 p;
     Vec3 normal;
+    Material* material = nullptr;
 };
 
 class Hitable

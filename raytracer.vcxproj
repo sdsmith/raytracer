@@ -147,19 +147,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="behaviour.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="hitable.h" />
     <ClInclude Include="hitable_list.h" />
+    <ClInclude Include="material.h" />
+    <ClInclude Include="lambertian.h" />
+    <ClInclude Include="metal.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="behaviour.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="hitable_list.cpp" />
     <ClCompile Include="raytracer.cpp" />
     <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
