@@ -1,5 +1,5 @@
 CXX ?= clang++
-CXXFLAGS ?= -std=c++14
+CXXFLAGS += -std=c++14
 BUILD_DIR = build
 CPP_FILES := $(wildcard *.cpp)
 OBJ_FILES := $(addprefix ${BUILD_DIR}/,$(notdir $(CPP_FILES:.cpp=.o)))
