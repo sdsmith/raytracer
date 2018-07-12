@@ -1,5 +1,7 @@
 #pragma once
+
 #include <array>
+#include <cassert>
 #include <math.h>
 
 class Vec3
@@ -36,6 +38,9 @@ public:
 
 inline std::istream& operator>>(std::istream& is, Vec3& v);
 inline std::ostream& operator<<(std::ostream& os, Vec3& v);
+
+inline bool operator==(const Vec3& lhs, const Vec3& rhs);
+inline bool operator!=(const Vec3& lhs, const Vec3& rhs);
 
 inline Vec3 operator+(const Vec3& v1, const Vec3& v2);
 inline Vec3 operator-(const Vec3& v1, const Vec3& v2);
@@ -115,6 +120,16 @@ inline std::ostream& operator<<(std::ostream& os, Vec3& v) {
     return os;
 }
 
+inline bool operator==(const Vec3& lhs, const Vec3& rhs) {
+    return (lhs.e[0] == rhs.e[0]) 
+        && (lhs.e[1] == rhs.e[1]) 
+        && (lhs.e[2] == rhs.e[2]);
+}
+
+inline bool operator!=(const Vec3& lhs, const Vec3& rhs) {
+    return !(lhs == rhs);
+}
+
 inline Vec3 operator+(const Vec3& v1, const Vec3& v2) {
     Vec3 u(v1);
     u += v2;
@@ -167,5 +182,6 @@ inline Vec3 cross(const Vec3& v1, const Vec3& v2) {
 }
 
 inline Vec3 unit_vector(const Vec3& v) {
+    assert(v.length() > 0);
     return v / v.length();
 }

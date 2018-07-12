@@ -38,17 +38,18 @@ public:
         Vec3 refracted;
         float reflect_prob;
         if (refract(r_in.direction(), outward_normal, ni, nt, refracted)) {
+            // Because it's dielectric, assume there is a chance of reflection
+            // based on schlick's approx rather than guaranteed refraction.
             reflect_prob = schlick(cosine, refractive_index);
         } else {
             reflect_prob = 1.0f;
         }
         assert(0.0f <= reflect_prob && reflect_prob <= 1.0f);
         
-        if (rand_normalized() < reflect_prob) {
-            scattered = Ray(rec.p, refracted);
-        } else {
+        if (rand_normalized() <= reflect_prob) {
             scattered = Ray(rec.p, reflect(r_in.direction(), rec.normal));
-            return false;
+        } else {
+            scattered = Ray(rec.p, refracted);
         }
 
         return true;
