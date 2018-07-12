@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cassert>
+#include <iostream>
 #include <math.h>
 
 class Vec3
@@ -111,13 +112,11 @@ inline void Vec3::make_unit_vector() {
 }
 
 inline std::istream& operator>>(std::istream& is, Vec3& v) {
-    is >> v.e[0] >> v.e[1] >> v.e[2];
-    return is;
+    return is >> v.e[0] >> v.e[1] >> v.e[2];
 }
 
 inline std::ostream& operator<<(std::ostream& os, Vec3& v) {
-    os << v.e[0] << " " << v.e[1] << " " << v.e[2];
-    return os;
+    return os << v.e[0] << " " << v.e[1] << " " << v.e[2];
 }
 
 inline bool operator==(const Vec3& lhs, const Vec3& rhs) {
