@@ -2,6 +2,9 @@
 
 #include "vec3.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h> // M_PI
+
 // Packed attribute
 //
 #if defined(__GNUC__) // __GNUG__
@@ -31,3 +34,6 @@ inline bool is_nan(double f) { return f != f; }
 inline bool is_nan(const Vec3& v) {
     return is_nan(v.e[0]) || is_nan(v.e[1]) || is_nan(v.e[2]);
 }
+
+template<typename T>
+constexpr T pi = static_cast<T>(M_PI);
