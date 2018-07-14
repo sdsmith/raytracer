@@ -1,29 +1,35 @@
 # ref: https://stackoverflow.com/questions/35110123/travis-ci-with-c14-and-linux
 language: generic
 script: make
+sources:
+- llvm-toolchain-precise-3.8
+- ubuntu-toolchain-r-test
 
 matrix:
   include:
   - os: linux
-    matrix:
-      env:
-      - COMPILER_NAME=gcc CXX=g++-5 CXXFLAGS="-m32"
-      - COMPILER_NAME=gcc CXX=g++-5 CXXFLAGS="-m64"
+    - COMPILER_NAME=gcc CXX=g++-5 CXX=gcc-5 CXXFLAGS="-m32"
     addons:
       apt:
         packages:
           - g++-5
-        sources: &sources
-          - llvm-toolchain-precise-3.8
-          - ubuntu-toolchain-r-test
   - os: linux
-    matrix:
-      env:
-      - COMPILER_NAME=clang CXX=clang++-3.8 CXXFLAGS="-m32 -stdlib=libc++"
-      - COMPILER_NAME=clang CXX=clang++-3.8 CXXFLAGS="-m64 -stdlib=libc++"
+    - COMPILER_NAME=gcc CXX=g++-5 CXX=gcc-5 CXXFLAGS="-m64"
+    addons:
+      apt:
+        packages:
+          - g++-5          
+  - os: linux
+    - COMPILER_NAME=clang CXX=clang++-3.8 CXX=clang-3.8 CXXFLAGS="-m32 -stdlib=libc++"
     addons:
       apt:
         packages:
           - clang-3.8
           - libc++-dev
-        sources: *sources
+  - os: linux
+    - COMPILER_NAME=clang CXX=clang++-3.8 CXX=clang-3.8 CXXFLAGS="-m64 -stdlib=libc++"
+    addons:
+      apt:
+        packages:
+          - clang-3.8
+          - libc++-dev
