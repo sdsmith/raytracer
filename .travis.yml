@@ -5,9 +5,10 @@ script: make
 matrix:
   include:
   - os: linux
-    env:
-    - COMPILER_NAME=gcc CXX=g++-5 CXXFLAGS="-m32"
-    - COMPILER_NAME=gcc CXX=g++-5 CXXFLAGS="-m64"
+    matrix:
+      env:
+      - COMPILER_NAME=gcc CXX=g++-5 CXXFLAGS="-m32"
+      - COMPILER_NAME=gcc CXX=g++-5 CXXFLAGS="-m64"
     addons:
       apt:
         packages:
@@ -16,9 +17,10 @@ matrix:
           - llvm-toolchain-precise-3.8
           - ubuntu-toolchain-r-test
   - os: linux
-    env:
-    - COMPILER_NAME=clang CXX=clang++-3.8 CXXFLAGS="-m32 -stdlib=libc++"
-    - COMPILER_NAME=clang CXX=clang++-3.8 CXXFLAGS="-m64 -stdlib=libc++"
+    matrix:
+      env:
+      - COMPILER_NAME=clang CXX=clang++-3.8 CXXFLAGS="-m32 -stdlib=libc++"
+      - COMPILER_NAME=clang CXX=clang++-3.8 CXXFLAGS="-m64 -stdlib=libc++"
     addons:
       apt:
         packages:
