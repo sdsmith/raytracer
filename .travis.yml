@@ -5,7 +5,7 @@ script: make
 matrix:
   include:
     - os: linux
-      env: COMPILER_NAME=gcc CXX=g++-5 CXX=gcc-5 CXXFLAGS="-m32"
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5 CXXFLAGS="-m32"
       addons:
         apt:
           packages:
@@ -15,7 +15,7 @@ matrix:
             - ubuntu-toolchain-r-test
 
     - os: linux
-      env: COMPILER_NAME=gcc CXX=g++-5 CXX=gcc-5 CXXFLAGS="-m64"
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5 CXXFLAGS="-m64"
       addons:
         apt:
           packages:
@@ -25,7 +25,7 @@ matrix:
             - ubuntu-toolchain-r-test
     
     - os: linux
-      env: COMPILER_NAME=clang CXX=clang++-3.8 CXX=clang-3.8 CXXFLAGS="-m32 -stdlib=libc++"
+      env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8 CXXFLAGS="-m32 -stdlib=libc++"
       addons:
         apt:
           packages:
@@ -36,7 +36,7 @@ matrix:
             - ubuntu-toolchain-r-test
             
     - os: linux
-      env: COMPILER_NAME=clang CXX=clang++-3.8 CXX=clang-3.8 CXXFLAGS="-m64 -stdlib=libc++"
+      env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8 CXXFLAGS="-m64 -stdlib=libc++"
       addons:
         apt:
           packages:
