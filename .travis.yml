@@ -33,6 +33,7 @@ matrix:
             - clang-3.8
             - libc++-dev:i386
             - libc6-dev-i386
+            - libgcc-4.9-dev:i386
             - linux-libc-dev:i386
           sources:
             - llvm-toolchain-precise-3.8
