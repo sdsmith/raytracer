@@ -13,9 +13,17 @@
 #include "lambertian.h"
 #include "metal.h"
 
+#ifdef _MSC_VER
+// Ignore warnings for unsafe std::gmtime
+#pragma warning(disable:4996)
+#endif
+
 #include <cassert>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>   // std::gmtime
+#include <iomanip> // std::put_time
 #include <limits>
 #include <memory>
 #include <fstream>
@@ -129,7 +137,24 @@ int main()
                    90/*degree vertFov*/, 
                    viewport.aspect_ratio());
 
-    gen_ppm(viewport, cam, world.get());
+    auto time_point_start = std::chrono::system_clock::now();
+    std::time_t t_start = std::chrono::system_clock::to_time_t(time_point_start);
+    std::cout << "Start time: "
+              << std::put_time(std::gmtime(&t_start), "%F %T UTC")
+              << std::endl;
+    {
+        gen_ppm(viewport, cam, world.get());
+    }
+    auto time_point_end = std::chrono::system_clock::now();
+    std::time_t t_end = std::chrono::system_clock::to_time_t(time_point_end);
+    std::cout << "End time  : "
+              << std::put_time(std::gmtime(&t_end), "%F %T UTC")
+              << std::endl;
+
+    std::cout << "Duration  : "
+              << std::chrono::duration_cast<std::chrono::seconds>(
+                     time_point_end - time_point_start).count()
+              << "s" << std::endl;
 
     // TODO: cleanup memory
 
