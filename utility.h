@@ -14,7 +14,7 @@
 #endif
 #endif
 
-constexpr float flop_err_thresh = 0.00005f;
+constexpr float flop_err_thresh = 0.000015f;
 
 constexpr bool float_eq(float a, float b) {
     return (a - flop_err_thresh) < b && b < (a + flop_err_thresh);

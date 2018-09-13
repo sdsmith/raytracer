@@ -10,6 +10,7 @@ public:
 
     bool hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) const override;
 
+private:
     Hitable** list = nullptr;
     size_t list_size = 0;
 };
