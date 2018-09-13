@@ -99,16 +99,26 @@ void gen_ppm(const Viewport& viewport, const Camera& cam, const Hitable* world)
 
 int main()
 {
+    std::vector<Hitable*> hitables;
+
     srand(0);
 
-    std::vector<Hitable*> hitables;
-    const float R = cos(pi<float> / 4.0f);
-    hitables.push_back(new Sphere({ -R, 0, -1 }, R, new Lambertian({ 0, 0, 1 })));
-    hitables.push_back(new Sphere({ R, 0, -1 }, R, new Lambertian({ 1, 0, 0 })));
+    hitables.push_back(new Sphere({0.0f, -100.5f, -1.0f}, 100.0f, new Lambertian({0.8f, 0.8f, 0.0f}))); // base
+    { // glass sphere
+        hitables.push_back(new Sphere({-1.0f, 0.0f, -1.0f}, 0.5f, new Dielectric(1.5f)));
+        hitables.push_back(new Sphere({-1.0f, 0.0f, -1.0f}, -0.45f, new Dielectric(1.5f)));
+    }
+    hitables.push_back(new Sphere({0.0f, 0.0f, -1.0f}, 0.5f, new Lambertian({0.1f, 0.2f, 0.5f})));
+    hitables.push_back(new Sphere({1.0f, 0.0f, -1.0f}, 0.5f, new Metal({0.8f, 0.6f, 0.2f}, 1.0f)));
+
     std::unique_ptr<Hitable> world = std::make_unique<Hitable_List>(hitables.data(), hitables.size());
 
-    constexpr Viewport viewport = { 200, 100 };
-    Camera cam(90/*degree vertFov*/, viewport.aspect_ratio());
+    constexpr Viewport viewport = {200, 100};
+    Camera cam(Ray({-2, 2,  1}/*origin*/, 
+                   { 0, 0, -1}/*fwd*/), 
+                   { 0, 1,  0}/*up*/, 
+                   90/*degree vertFov*/, 
+                   viewport.aspect_ratio());
 
     gen_ppm(viewport, cam, world.get());
 

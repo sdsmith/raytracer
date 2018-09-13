@@ -2,9 +2,6 @@
 
 #include "vec3.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h> // M_PI
-
 // Packed attribute
 //
 #if defined(__GNUC__) // __GNUG__
@@ -17,7 +14,7 @@
 #endif
 #endif
 
-constexpr float flop_err_thresh = 0.00001f;
+constexpr float flop_err_thresh = 0.00005f;
 
 constexpr bool float_eq(float a, float b) {
     return (a - flop_err_thresh) < b && b < (a + flop_err_thresh);
@@ -36,4 +33,4 @@ inline bool is_nan(const Vec3& v) {
 }
 
 template<typename T>
-constexpr T pi = static_cast<T>(M_PI);
+constexpr T pi = static_cast<T>(3.14159265358979323846L);
