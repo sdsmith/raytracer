@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <limits>
 #include <memory>
+#include <fstream>
 #include <vector>
 
 struct Viewport {
@@ -74,7 +75,13 @@ Vec3 gamma_correction(const Vec3& col) {
 
 void gen_ppm(const Viewport& viewport, const Camera& cam, const Hitable* world)
 {
-    printf("P3\n%d %d\n255\n", viewport.width, viewport.height);
+    std::ofstream imageFile("image.ppm", std::ios::out | std::ios::trunc);
+    if (!imageFile.is_open()) {
+        printf("Unable to open output file\n");
+        return;
+    }
+
+    imageFile << "P3\n" << viewport.width << " " << viewport.height << "\n255\n";
 
     // Traverse from the viewport's lower left corner to top right corner, 
     // left to right, bottom to top.
@@ -92,9 +99,11 @@ void gen_ppm(const Viewport& viewport, const Camera& cam, const Hitable* world)
             int ig = static_cast<int>(255.99 * col.g());
             int ib = static_cast<int>(255.99 * col.b());
 
-            printf("%d %d %d\n", ir, ig, ib);
+            imageFile << ir << " " << ig << " " << ib << "\n";
         }
     }
+
+    imageFile.close();
 }
 
 int main()
