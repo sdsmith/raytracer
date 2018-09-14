@@ -157,6 +157,7 @@
     <ClInclude Include="metal.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="sphere.h" />
+    <ClInclude Include="strutil.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="vec3.h" />
   </ItemGroup>
@@ -164,6 +165,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="hitable_list.cpp" />
+    <ClCompile Include="strutil.cpp" />
     <ClCompile Include="raytracer.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="utility.cpp" />
