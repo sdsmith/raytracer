@@ -181,38 +181,40 @@ std::vector<Hitable*> test_scene()
     return list;
 }
 
-int main()
-{
-    srand(0);
+struct Config {
+    unsigned int rand_seed; // seed for randomization
+    Viewport viewport;
+    Ray eye;
+    Vec3 up;
+    float vert_fov;      // vertical field of view (in degrees)
+    float aperture;
+    int aa_sample_size;  // anti-aliasing sample size per pixel
+    int max_ray_depth;
+};
 
-    std::vector<Hitable*> hitables = random_scene();
-    std::unique_ptr<Hitable_List> world = std::make_unique<Hitable_List>(hitables.data(), hitables.size());
+void raytrace(Config& cfg) {
+    srand(cfg.rand_seed);
 
-    constexpr Viewport viewport = {200, 100};
-    Vec3 eye_origin(3, 3, 2);
-    Vec3 eye_fwd(0, 0, -1);
-    float dist_to_focus = (eye_origin - eye_fwd).length();
-    float aperture = 2.0f;
-    Camera cam(Ray(eye_origin, eye_fwd), 
-                   {0, 1, 0}/*up*/, 
-                   20/*degree vertFov*/, 
-                   viewport.aspect_ratio(),
-                   aperture,
-                   dist_to_focus);
+    std::vector<Hitable*> hitables = test_scene(); // random_scene();
+    std::unique_ptr<Hitable_List> world =
+        std::make_unique<Hitable_List>(hitables.data(), hitables.size());
+
+    const float dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
+    Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
+               cfg.aperture, dist_to_focus);
 
     auto time_point_start = std::chrono::system_clock::now();
-    std::time_t t_start = std::chrono::system_clock::to_time_t(time_point_start);
+    std::time_t t_start =
+        std::chrono::system_clock::to_time_t(time_point_start);
     std::cout << "Start time: "
-              << std::put_time(std::gmtime(&t_start), "%F %T UTC")
-              << std::endl;
+              << std::put_time(std::gmtime(&t_start), "%F %T UTC") << std::endl;
     {
-        gen_ppm(viewport, cam, world.get());
+        gen_ppm(cfg.viewport, cam, world.get());
     }
     auto time_point_end = std::chrono::system_clock::now();
     std::time_t t_end = std::chrono::system_clock::to_time_t(time_point_end);
     std::cout << "End time  : "
-              << std::put_time(std::gmtime(&t_end), "%F %T UTC")
-              << std::endl;
+              << std::put_time(std::gmtime(&t_end), "%F %T UTC") << std::endl;
 
     std::cout << "Duration  : "
               << std::chrono::duration_cast<std::chrono::seconds>(
@@ -220,6 +222,19 @@ int main()
               << "s" << std::endl;
 
     // TODO: cleanup memory
+}
+
+int main()
+{
+    Config cfg;
+    cfg.rand_seed = 0;
+    cfg.viewport = {200, 100};
+    cfg.eye = {{3, 3, 2}, {0, 0, -1}};
+    cfg.up = {0, 1, 0};
+    cfg.vert_fov = 20;
+    cfg.aperture = 2.0f;
+
+    raytrace(cfg);
 
     return 0;
 }
