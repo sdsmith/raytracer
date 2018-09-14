@@ -18,3 +18,13 @@ Vec3 rand_in_unit_sphere() {
 
     return p;
 }
+
+Vec3 rand_in_unit_disk() {
+    Vec3 p;
+    do {
+        p = 2.0f * Vec3(rand_normalized(), rand_normalized(), 0) -
+            Vec3(1.0f, 1.0f, 0.0f);
+    } while (dot(p, p) >= 1.0f);
+
+    return p;
+}

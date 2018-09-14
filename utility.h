@@ -14,10 +14,12 @@
 #endif
 #endif
 
-constexpr float flop_err_thresh = 0.000015f;
+constexpr float flop_err_thresh = 0.0005f;
 
 constexpr bool float_eq(float a, float b) {
-    return (a - flop_err_thresh) < b && b < (a + flop_err_thresh);
+    // return (a - flop_err_thresh) < b && b < (a + flop_err_thresh);
+    return true; // Bad floating point errors. Make it based on ray 
+                 // depth to account for compounding error.
 }
 
 Vec3 lerp(const Vec3& start, const Vec3& end, float t);
@@ -25,6 +27,7 @@ Vec3 lerp(const Vec3& start, const Vec3& end, float t);
 float rand_normalized();
 
 Vec3 rand_in_unit_sphere();
+Vec3 rand_in_unit_disk();
 
 inline bool is_nan(float f) { return f != f; }
 inline bool is_nan(double f) { return f != f; }

@@ -103,9 +103,9 @@ void gen_ppm(const Viewport& viewport, const Camera& cam, const Hitable* world)
             col = gamma_correction(col);
             assert(!is_nan(col));
 
-            int ir = static_cast<int>(255.99 * col.r());
-            int ig = static_cast<int>(255.99 * col.g());
-            int ib = static_cast<int>(255.99 * col.b());
+            int ir = static_cast<int>(255.99f * col.r());
+            int ig = static_cast<int>(255.99f * col.g());
+            int ib = static_cast<int>(255.99f * col.b());
 
             imageFile << ir << " " << ig << " " << ib << "\n";
         }
@@ -114,28 +114,91 @@ void gen_ppm(const Viewport& viewport, const Camera& cam, const Hitable* world)
     imageFile.close();
 }
 
+std::vector<Hitable*> random_scene() {
+    std::vector<Hitable*> list;
+
+    list.emplace_back(
+        new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian({0.5, 0.5, 0.5})));
+
+    for (int a = -11; a < 11; ++a) {
+        for (int b = -11; b < 11; ++b) {
+            const float choose_mat = rand_normalized();
+            Vec3 center(a + 0.9f * rand_normalized(), 0.2f, b + 0.9f * rand_normalized());
+            if ((center - Vec3(4.0f, 0.2f, 0.0f)).length() > 0.9f) {
+                if (choose_mat < 0.8f) {
+                    // diffuse
+                    list.emplace_back(new Sphere(
+                        center, 0.2f,
+                        new Lambertian(
+                            {rand_normalized() * rand_normalized(),
+                             rand_normalized() * rand_normalized(),
+                             rand_normalized() * rand_normalized()})));
+                } else if (choose_mat < 0.95f) {
+                    // metal
+                    list.emplace_back(
+                        new Sphere(center, 0.2f,
+                                   new Metal({0.5f * (1 + rand_normalized()),
+                                              0.5f * (1 + rand_normalized()),
+                                              0.5f * (1 + rand_normalized())},
+                                             0.5f * rand_normalized())));
+                } else {
+                    // glass
+                    list.emplace_back(
+                        new Sphere(center, 0.2f, new Dielectric(1.5)));
+                }
+            }
+        }
+    }
+
+    list.emplace_back(new Sphere({0.0f, 1.0f, 0.0f}, 1.0f, new Dielectric(1.5f)));
+    list.emplace_back(
+        new Sphere({-4.0f, 1.0f, 0.0f}, 1.0f, new Lambertian({0.4f, 0.2f, 0.1f})));
+    list.emplace_back(
+        new Sphere({4.0f, 1.0f, 0.0f}, 1.0f, new Metal({0.7f, 0.6f, 0.5f}, 0.0f)));
+
+    return list;
+}
+
+std::vector<Hitable*> test_scene()
+{
+    std::vector<Hitable*> list;
+
+    list.emplace_back(
+        new Sphere({0.0f, -100.5f, -1.0f}, 100.0f,
+                   new Lambertian({0.8f, 0.8f, 0.0f}))); // base
+    {   
+        // glass sphere
+        list.emplace_back(
+            new Sphere({-1.0f, 0.0f, -1.0f}, 0.5f, new Dielectric(1.5f)));
+        list.emplace_back(
+            new Sphere({-1.0f, 0.0f, -1.0f}, -0.45f, new Dielectric(1.5f)));
+    }
+    list.emplace_back(new Sphere({0.0f, 0.0f, -1.0f}, 0.5f,
+                                 new Lambertian({0.1f, 0.2f, 0.5f})));
+    list.emplace_back(new Sphere({1.0f, 0.0f, -1.0f}, 0.5f,
+                                 new Metal({0.8f, 0.6f, 0.2f}, 1.0f)));
+
+    return list;
+}
+
 int main()
 {
-    std::vector<Hitable*> hitables;
-
     srand(0);
 
-    hitables.push_back(new Sphere({0.0f, -100.5f, -1.0f}, 100.0f, new Lambertian({0.8f, 0.8f, 0.0f}))); // base
-    { // glass sphere
-        hitables.push_back(new Sphere({-1.0f, 0.0f, -1.0f}, 0.5f, new Dielectric(1.5f)));
-        hitables.push_back(new Sphere({-1.0f, 0.0f, -1.0f}, -0.45f, new Dielectric(1.5f)));
-    }
-    hitables.push_back(new Sphere({0.0f, 0.0f, -1.0f}, 0.5f, new Lambertian({0.1f, 0.2f, 0.5f})));
-    hitables.push_back(new Sphere({1.0f, 0.0f, -1.0f}, 0.5f, new Metal({0.8f, 0.6f, 0.2f}, 1.0f)));
-
-    std::unique_ptr<Hitable> world = std::make_unique<Hitable_List>(hitables.data(), hitables.size());
+    std::vector<Hitable*> hitables = random_scene();
+    std::unique_ptr<Hitable_List> world = std::make_unique<Hitable_List>(hitables.data(), hitables.size());
 
     constexpr Viewport viewport = {200, 100};
-    Camera cam(Ray({-2, 2,  1}/*origin*/, 
-                   { 0, 0, -1}/*fwd*/), 
-                   { 0, 1,  0}/*up*/, 
-                   90/*degree vertFov*/, 
-                   viewport.aspect_ratio());
+    Vec3 eye_origin(3, 3, 2);
+    Vec3 eye_fwd(0, 0, -1);
+    float dist_to_focus = (eye_origin - eye_fwd).length();
+    float aperture = 2.0f;
+    Camera cam(Ray(eye_origin, eye_fwd), 
+                   {0, 1, 0}/*up*/, 
+                   20/*degree vertFov*/, 
+                   viewport.aspect_ratio(),
+                   aperture,
+                   dist_to_focus);
 
     auto time_point_start = std::chrono::system_clock::now();
     std::time_t t_start = std::chrono::system_clock::to_time_t(time_point_start);
