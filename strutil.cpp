@@ -38,7 +38,7 @@ std::string Str_Util::vformat(const char *fmt, va_list ap)
         // vsnprintf reported that it wanted to write more characters
         // than we allotted.  So try again using a dynamic buffer.  This
         // doesn't happen very often if we chose our initial size well.
-        size = (needed > 0) ? (needed + 1) : (size * 2);
+        size = (needed > 0) ? (static_cast<size_t>(needed) + 1) : (size * 2);
         dynamicbuf.resize(size);
         buf = &dynamicbuf[0];
     }

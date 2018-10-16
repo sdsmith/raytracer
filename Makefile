@@ -9,10 +9,10 @@ OBJ_FILES := $(addprefix ${BUILD_DIR}/,$(notdir $(CPP_FILES:.cpp=.o)))
 all: ${BUILD_DIR}/raytracer
 
 ${BUILD_DIR}/%.o: %.cpp setup
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -c -o $@ $< -pthread
 
 ${BUILD_DIR}/raytracer: $(OBJ_FILES)
-	$(CXX) $(CXXFLAGS) -o $@ $^ 
+	$(CXX) $(CXXFLAGS) -o $@ $^ -pthread
 
 clean:
 	rm -r ${BUILD_DIR}
