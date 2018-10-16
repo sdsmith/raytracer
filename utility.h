@@ -2,6 +2,8 @@
 
 #include "vec3.h"
 
+#include <cmath>
+
 // Packed attribute
 //
 #if defined(__GNUC__) // __GNUG__
@@ -29,11 +31,11 @@ float rand_normalized();
 Vec3 rand_in_unit_sphere();
 Vec3 rand_in_unit_disk();
 
-inline bool is_nan(float f) { return f != f; }
-inline bool is_nan(double f) { return f != f; }
-inline bool is_nan(const Vec3& v) {
-    return is_nan(v.e[0]) || is_nan(v.e[1]) || is_nan(v.e[2]);
-}
-
 template<typename T>
 constexpr T pi = static_cast<T>(3.14159265358979323846L);
+
+template<typename T>
+struct Point2D {
+    T x;
+    T y;
+};

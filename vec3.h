@@ -5,7 +5,7 @@
 #include <array>
 #include <cassert>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <string>
 
 class Vec3
@@ -36,6 +36,7 @@ public:
     inline float length() const;
     inline float squared_length() const;
     inline void make_unit_vector();
+    inline bool is_nan() const;
 
     inline std::string to_string() const;
 
@@ -123,6 +124,11 @@ inline void Vec3::make_unit_vector()
 {
     float k = 1.0f / squared_length();
     *this *= k;
+}
+
+inline bool Vec3::is_nan() const
+{
+    return std::isnan(e[0]) || std::isnan(e[1]) || std::isnan(e[2]);
 }
 
 inline std::string Vec3::to_string() const
