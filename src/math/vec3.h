@@ -1,6 +1,6 @@
 #pragma once
 
-#include "strutil.h"
+#include "utility/strutil.h"
 
 #include <array>
 #include <cassert>

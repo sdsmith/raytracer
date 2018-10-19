@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ray.h"
-#include "utility.h"
+#include "math/ray.h"
+#include "utility/utility.h"
 
 class Camera
 {

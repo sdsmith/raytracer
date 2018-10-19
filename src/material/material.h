@@ -2,7 +2,7 @@
 
 #include "hitable.h"
 #include "light.h"
-#include "ray.h"
+#include "math/ray.h"
 
 struct Hit_Record;
 

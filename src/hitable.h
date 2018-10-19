@@ -1,9 +1,9 @@
 #pragma once
 
-#include "material.h"
-#include "ray.h"
+#include "material/material.h"
+#include "math/ray.h"
 
-class Material;
+//class Material; // TODO(sdsmith): 
 
 struct Hit_Record {
     float t = 0.0f;

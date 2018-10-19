@@ -2,6 +2,7 @@
 
 #include "material.h"
 #include "light.h"
+#include "utility/utility.h"
 
 #include <cassert>
 

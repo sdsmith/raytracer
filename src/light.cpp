@@ -1,5 +1,6 @@
 #include "light.h"
-#include "utility.h"
+
+#include "utility/utility.h"
 
 #include <cassert>
 #include <cmath>

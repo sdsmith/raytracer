@@ -6,12 +6,11 @@ class Hitable_List : public Hitable
 {
 public:
     Hitable_List() {};
-    Hitable_List(Hitable** list, size_t size) : list(list), list_size(size) {}
-
+    Hitable_List(std::vector<Hitable*> hitables) : m_list(hitables) {}
+    void add(Hitable* hitable) { m_list.emplace_back(hitable); }
     bool hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) const override;
 
 private:
-    Hitable** list = nullptr;
-    size_t list_size = 0;
+    std::vector<Hitable*> m_list;
 };
 

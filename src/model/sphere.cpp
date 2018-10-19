@@ -1,6 +1,8 @@
 #include "sphere.h"
 
-#include "utility.h"
+#include "utility/utility.h"
+
+#include <cmath>
 
 bool Sphere::hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) const
 {
@@ -12,9 +14,9 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) const
     
     float root;
     if (discriminant > 0) {
-        root = (-b - sqrt(discriminant)) / (2.0f * a);
+        root = (-b - std::sqrt(discriminant)) / (2.0f * a);
     } else {
-        root = (-b + sqrt(discriminant)) / (2.0f * a);
+        root = (-b + std::sqrt(discriminant)) / (2.0f * a);
     }
 
     if (t_min < root && root < t_max) {

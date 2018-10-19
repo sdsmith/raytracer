@@ -5,8 +5,8 @@ bool Hitable_List::hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) 
     float closest_hit = t_max;
     Hit_Record hit_rec;
 
-    for (size_t i = 0; i < list_size; ++i) {
-        if (list[i]->hit(r, t_min, closest_hit, hit_rec)) {
+    for (auto const& hitable : m_list) {
+        if (hitable->hit(r, t_min, closest_hit, hit_rec)) {
             is_hit = true;
             closest_hit = hit_rec.t;
             rec = hit_rec;

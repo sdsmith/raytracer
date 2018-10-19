@@ -1,7 +1,7 @@
 #pragma once
 
 #include "material.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 /**
  * @brief Lambertian (diffuse) material.
