@@ -2,15 +2,16 @@
 
 #include "utility/utility.h"
 
+#include <cassert>
 #include <cmath>
 
-bool Sphere::hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) const
+bool Sphere::hit(Ray const& r, float t_min, float t_max, Hit_Record& rec) const
 {
-    Vec3 oc = r.origin() - center;
-    float a = dot(r.direction(), r.direction());
-    float b = 2.0f * dot(oc, r.direction());
-    float c = dot(oc, oc) - radius * radius;
-    float discriminant = b * b - 4 * a * c;
+    Vec3 const oc = r.origin() - center;
+    float const a = dot(r.direction(), r.direction());
+    float const b = 2.0f * dot(oc, r.direction());
+    float const c = dot(oc, oc) - radius * radius;
+    float const discriminant = b * b - 4 * a * c;
     
     float root;
     if (discriminant > 0) {

@@ -1,8 +1,8 @@
 #include "utility.h"
 
-#include <cstdlib>
+#include <cstdlib> // rand
 
-Vec3 lerp(const Vec3& start, const Vec3& end, float t) {
+Vec3 lerp(Vec3 const& start, Vec3 const& end, float t) {
     return (1.0f - t) * start + t * end;
 }
 

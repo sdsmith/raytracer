@@ -3,7 +3,7 @@
 #include "material/material.h"
 #include "math/ray.h"
 
-//class Material; // TODO(sdsmith): 
+class Material; // TODO(sdsmith): 
 
 struct Hit_Record {
     float t = 0.0f;
@@ -15,5 +15,5 @@ struct Hit_Record {
 class Hitable
 {
 public:
-    virtual bool hit(const Ray& r, float t_min, float t_max, Hit_Record& rec) const = 0;
+    virtual bool hit(Ray const& r, float t_min, float t_max, Hit_Record& rec) const = 0;
 };

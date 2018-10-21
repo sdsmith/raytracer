@@ -2,8 +2,8 @@
 
 #include "math/vec3.h"
 
-Vec3 reflect(const Vec3& v, const Vec3& n);
+Vec3 reflect(Vec3 const& v, Vec3 const& n);
 
-bool refract(const Vec3& v, const Vec3& n, float ni, float nt, Vec3& refracted);
+bool refract(Vec3 const& v, Vec3 const& n, float ni, float nt, Vec3& refracted);
 
 float schlick(float cosine, float refraction_index);

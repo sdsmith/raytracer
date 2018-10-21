@@ -1,5 +1,7 @@
 #include "image_writer.h"
 
+#include "utility/strutil.h"
+
 void Image_Writer::open(std::string const& filename) {
     m_image_file.open(filename, std::ios::out | std::ios::trunc);
     // TODO(sdsmith): check return

@@ -1,6 +1,6 @@
 #include "strutil.h"
 
-std::string Str_Util::format(const char *fmt, ...)
+std::string Str_Util::format(char const* fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
@@ -9,7 +9,7 @@ std::string Str_Util::format(const char *fmt, ...)
     return buf;
 }
 
-std::string Str_Util::vformat(const char *fmt, va_list ap)
+std::string Str_Util::vformat(char const* fmt, va_list ap)
 {
     // Allocate a buffer on the stack that's big enough for us almost
     // all the time.  Be prepared to allocate dynamically if it doesn't fit.
@@ -30,9 +30,9 @@ std::string Str_Util::vformat(const char *fmt, va_list ap)
         // glibc and current Windows return -1 for failure, i.e., not
         // telling us how much was needed.
 
-        if (needed <= (int)size && needed >= 0) {
+        if (needed <= static_cast<int>(size) && needed >= 0) {
             // It fit fine so we're done.
-            return std::string(buf, (size_t)needed);
+            return std::string(buf, static_cast<size_t>(needed));
         }
 
         // vsnprintf reported that it wanted to write more characters

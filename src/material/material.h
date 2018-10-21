@@ -12,5 +12,5 @@ public:
     /**
      * @return True if scatter ray was generated.
      */
-    virtual bool scatter(const Ray& r_in, const Hit_Record& rec, Vec3& attenuation, Ray& scattered) const = 0;
+    virtual bool scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuation, Ray& scattered) const = 0;
 };

@@ -13,9 +13,9 @@ public:
     Thread_Pool(int num_threads);
     ~Thread_Pool();
 
-    Thread_Pool(const Thread_Pool& o) = delete;            // copy constr
-    Thread_Pool(Thread_Pool&& o) = delete;                 // move constr
-    Thread_Pool& operator=(const Thread_Pool& o) = delete; // copy assignment
+    Thread_Pool(Thread_Pool const& o) = delete;            // copy ctor
+    Thread_Pool(Thread_Pool&& o) = delete;                 // move ctor
+    Thread_Pool& operator=(Thread_Pool const& o) = delete; // copy assignment
     Thread_Pool& operator=(Thread_Pool&& o) = delete;      // move assignment
 
     void add_work(std::function<void()> job);

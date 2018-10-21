@@ -13,9 +13,10 @@ SOURCE_DIR = src
 INCLUDE_DIRS := -I$(SOURCE_DIR)
 CPP_FILES := $(shell find $(SOURCE_DIR) -name '*.cpp')
 OBJ_FILES = $(addprefix $(BUILD_DIR)/,$(CPP_FILES:%.cpp=%.o))
+DEP_FILES = $(OBJ_FILES:%.o=%.d)
 
 CXX ?= clang++
-CXXFLAGS += -std=c++14
+CXXFLAGS += -std=c++14 -pthread
 CXXFLAGS.debug := -g -O0
 CXXFLAGS.release := -O2
 CXXFLAGS += $(CXXFLAGS.$(BUILD))
@@ -24,12 +25,15 @@ CXXFLAGS += $(CXXFLAGS.$(BUILD))
 
 all: header $(BUILD_DIR)/$(EXECUTABLE) footer
 
+# Include .d dependencies
+-include $(DEP_FILES)
+
 $(BUILD_DIR)/%.o: %.cpp
-	@mkdir -p $(basename $@)
-	$(CXX) $(CXXFLAGS) -c -o $@ $< -pthread $(INCLUDE_DIRS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -MMD -c -o $@ $< $(INCLUDE_DIRS)
 
 $(BUILD_DIR)/$(EXECUTABLE): $(OBJ_FILES)
-	$(CXX) $(CXXFLAGS) -o $@ $^ -pthread $(INCLUDE_DIRS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(INCLUDE_DIRS)
 
 header:
 	@echo "==== $(BUILD) build"

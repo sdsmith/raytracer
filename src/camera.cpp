@@ -6,9 +6,9 @@
  */
 Camera::Camera(Ray eye, Vec3 up, float vert_fov, float aspect, float aperture, float focus_dist)
 {
-    const float theta = vert_fov * pi<float> / 180.0f;
-    const float half_height = tan(theta / 2);
-    const float half_width = aspect * half_height;
+    float const theta = vert_fov * pi<float> / 180.0f;
+    float const half_height = tan(theta / 2);
+    float const half_width = aspect * half_height;
 
     origin = eye.origin();
     w = unit_vector(origin - eye.direction());
@@ -24,7 +24,7 @@ Camera::Camera(Ray eye, Vec3 up, float vert_fov, float aspect, float aperture, f
 }
 
 Ray Camera::to_viewport(float s, float t) const {
-    Vec3 lens_pos = lens_radius * rand_in_unit_disk();
-    Vec3 offset = u * lens_pos.x() + v * lens_pos.y();
+    Vec3 const lens_pos = lens_radius * rand_in_unit_disk();
+    Vec3 const offset = u * lens_pos.x() + v * lens_pos.y();
     return Ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset);
 }

@@ -9,7 +9,7 @@
  * @param v Incident vector.
  * @param n Hitpoint surface normal.
  */
-Vec3 reflect(const Vec3& v, const Vec3& n) {
+Vec3 reflect(Vec3 const& v, Vec3 const& n) {
     return v - 2 * dot(v, n) * n;
 }
 
@@ -17,16 +17,16 @@ Vec3 reflect(const Vec3& v, const Vec3& n) {
 * @param v Incident vector.
 * @param n Hitpoint surface normal.
 */
-bool refract(const Vec3& v, const Vec3& n, float ni, float nt, Vec3& refracted) {
+bool refract(Vec3 const& v, Vec3 const& n, float ni, float nt, Vec3& refracted) {
     /*
      * Using Snell's law. 
      */
     assert(float_eq(n.length(), 1.0f));
 
-    const Vec3 uv = unit_vector(v);
-    const float dt = dot(uv, n);
-    const float ni_over_nt = ni / nt;
-    const float discriminant = 1.0f - ni_over_nt * ni_over_nt * (1.0f - dt * dt);
+    Vec3 const uv = unit_vector(v);
+    float const dt = dot(uv, n);
+    float const ni_over_nt = ni / nt;
+    float const discriminant = 1.0f - ni_over_nt * ni_over_nt * (1.0f - dt * dt);
     if (discriminant > 0) {
         refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminant);
         return true;

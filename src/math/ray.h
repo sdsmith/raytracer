@@ -2,11 +2,11 @@
 
 #include "vec3.h"
 
-class Ray
+struct Ray
 {
 public:
     Ray() {};
-    Ray(const Vec3& a, const Vec3& b) : A(a), B(b) {}
+    Ray(Vec3 const& a, Vec3 const& b) : A(a), B(b) {}
 
     Vec3 origin() const    { return A; }
     Vec3 direction() const { return B; }

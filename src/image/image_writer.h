@@ -8,7 +8,7 @@
 class Image_Writer
 {
 public:
-    void open(const std::string& filename);
+    void open(std::string const& filename);
     virtual void write(Config const& config) = 0;
     virtual void write(RbgFrame const& frame) = 0;
     void close();

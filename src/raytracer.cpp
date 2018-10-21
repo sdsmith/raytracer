@@ -145,8 +145,8 @@ private:
     static void color_pixel(Vec3& pixel, Config const& cfg, Hitable const& world,
                      Point2D<size_t> pos)
     {
-        const Viewport& viewport = cfg.viewport;
-        const float dist_to_focus =
+        Viewport const& viewport = cfg.viewport;
+        float const dist_to_focus =
             (cfg.eye.origin() - cfg.eye.direction()).length();
         Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
                    cfg.aperture, dist_to_focus);

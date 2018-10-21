@@ -10,7 +10,7 @@ RbgFrame::RbgFrame(size_t height, size_t width) {
     }
 }
     
-RbgFrame::RbgFrame(const Viewport& viewport)
+RbgFrame::RbgFrame(Viewport const& viewport)
     : RbgFrame(viewport.height, viewport.width) {}
 
 size_t RbgFrame::height() const { return pixels.size(); }

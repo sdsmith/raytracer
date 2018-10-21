@@ -30,7 +30,7 @@ public:
     std::vector<std::vector<Vec3>> pixels; //!< [row][column]
 
     RbgFrame(size_t height, size_t width);    
-    RbgFrame(const Viewport& viewport);
+    RbgFrame(Viewport const& viewport);
     size_t height() const;
     size_t width() const;
 };
