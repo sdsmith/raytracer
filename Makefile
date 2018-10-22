@@ -48,6 +48,9 @@ $(BUILD_DIR)/$(EXECUTABLE): $(OBJ_FILES)
 
 header:
 	@echo "==== $(CXX) $(BUILD) build"
+	@echo "== $(CXX) version:"
+	$(CXX) -v
+	@echo "== build"
 
 clean:
 	rm -r $(BUILD_DIR)
