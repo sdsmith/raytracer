@@ -1,11 +1,11 @@
 #include "graphics_types.h"
 
-float Viewport::aspect_ratio() const { return width / static_cast<float>(height); }
+float Viewport::aspect_ratio() const { return static_cast<float>(width) / static_cast<float>(height); }
 
 //------------------------------------------------------------------------------
-RbgFrame::RbgFrame(size_t height, size_t width) {
+RbgFrame::RbgFrame(unsigned height, unsigned width) {
     pixels.reserve(height);
-    for (size_t row = 0; row < height; ++row) {
+    for (unsigned row = 0; row < height; ++row) {
         pixels.emplace_back(width, Vec3(0.0f, 0.0f, 0.0f));
     }
 }
@@ -13,6 +13,6 @@ RbgFrame::RbgFrame(size_t height, size_t width) {
 RbgFrame::RbgFrame(Viewport const& viewport)
     : RbgFrame(viewport.height, viewport.width) {}
 
-size_t RbgFrame::height() const { return pixels.size(); }
+unsigned RbgFrame::height() const { return static_cast<unsigned>(pixels.size()); /*TODO(sdsmith): cast down*/}
 
-size_t RbgFrame::width() const { return pixels[0].size(); }
+unsigned RbgFrame::width() const { return static_cast<unsigned>(pixels[0].size()); /*TODO(sdsmith): cast down*/}

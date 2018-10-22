@@ -12,12 +12,16 @@ public:
     Ray to_viewport(float u, float v) const;
 
 private:
-    Vec3 origin;
-    Vec3 horizontal;
-    Vec3 vertical;
-    Vec3 lower_left_corner;
+    Vec3 origin = {};
+    Vec3 horizontal = {};
+    Vec3 vertical = {};
+    Vec3 lower_left_corner = {};
 
-    Vec3 u, v, w; // orthogonal basis
-    float lens_radius;
+    // orthogonal basis
+    Vec3 u = {};
+    Vec3 v = {};
+    Vec3 w = {};
+    
+    float lens_radius = 0;
 };
 

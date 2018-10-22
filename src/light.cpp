@@ -28,7 +28,7 @@ bool refract(Vec3 const& v, Vec3 const& n, float ni, float nt, Vec3& refracted) 
     float const ni_over_nt = ni / nt;
     float const discriminant = 1.0f - ni_over_nt * ni_over_nt * (1.0f - dt * dt);
     if (discriminant > 0) {
-        refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminant);
+        refracted = ni_over_nt * (uv - n * dt) - n * static_cast<float>(sqrt(discriminant)); // TODO(sdsmith): cast down
         return true;
     } else {
         return false;
@@ -54,5 +54,5 @@ float schlick(float cosine, float refraction_index) {
 
     float r0 = (1 - refraction_index) / (1 + refraction_index);
     r0 = r0 * r0;
-    return r0 + (1 - r0) * pow((1 - cosine), 5);
+    return r0 + (1 - r0) * static_cast<float>(pow((1 - cosine), 5)); // TODO(sdsmith): cast down
 }

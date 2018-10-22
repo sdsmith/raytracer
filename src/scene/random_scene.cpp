@@ -20,8 +20,8 @@ std::vector<Hitable*> const& Random_Scene::generate() {
     for (int a = -11; a < 11; ++a) {
         for (int b = -11; b < 11; ++b) {
             float const choose_mat = rand_normalized();
-            Vec3 center(a + 0.9f * rand_normalized(), 0.2f,
-                        b + 0.9f * rand_normalized());
+            Vec3 center(static_cast<float>(a) + 0.9f * rand_normalized(), 0.2f,
+                        static_cast<float>(b) + 0.9f * rand_normalized());
             if ((center - Vec3(4.0f, 0.2f, 0.0f)).length() > 0.9f) {
                 if (choose_mat < 0.8f) {
                     // diffuse

@@ -6,10 +6,12 @@
 
 class Scene {
 public:
+    virtual ~Scene() {}
+    
     virtual char const* name() const = 0;
     virtual std::vector<Hitable*> const& generate() = 0;
     std::vector<Hitable*> const& get() const;
 
 protected:
-    std::vector<Hitable*> m_scene;
+    std::vector<Hitable*> m_scene = {};
 };

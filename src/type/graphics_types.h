@@ -7,8 +7,8 @@
 
 struct Viewport {
 public:
-    size_t width;  //!< pixel width
-    size_t height; //!< pixel height
+    unsigned width;  //!< pixel width
+    unsigned height; //!< pixel height
 
     float aspect_ratio() const;
 };
@@ -27,10 +27,10 @@ public:
 
 struct RbgFrame {
 public:
-    std::vector<std::vector<Vec3>> pixels; //!< [row][column]
+    std::vector<std::vector<Vec3>> pixels = {}; //!< [row][column]
 
-    RbgFrame(size_t height, size_t width);    
+    RbgFrame(unsigned height, unsigned width);    
     RbgFrame(Viewport const& viewport);
-    size_t height() const;
-    size_t width() const;
+    unsigned height() const;
+    unsigned width() const;
 };

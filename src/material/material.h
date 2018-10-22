@@ -9,8 +9,10 @@ struct Hit_Record;
 class Material
 {
 public:
+    virtual ~Material() {}
+    
     /**
      * @return True if scatter ray was generated.
      */
-    virtual bool scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuation, Ray& scattered) const = 0;
+    virtual bool scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuation, Ray& scattered) const = 0;    
 };

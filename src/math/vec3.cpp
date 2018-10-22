@@ -65,7 +65,7 @@ Vec3& Vec3::operator/=(float const c)
 
 float Vec3::length() const
 {
-    return sqrt(squared_length());
+    return static_cast<float>(sqrt(squared_length())); // TODO(sdsmith): cast down
 }
 
 float Vec3::squared_length() const

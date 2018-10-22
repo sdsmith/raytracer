@@ -93,7 +93,9 @@ public:
 private:
     static Vec3 gamma_correction(Vec3 const& col) {
         // Use Gamma 2 (1/gamma => 1/2)
-        Vec3 corrCol = Vec3(sqrt(col.r()), sqrt(col.g()), sqrt(col.b()));
+        Vec3 corrCol = Vec3(static_cast<float>(sqrt(col.r())),
+                            static_cast<float>(sqrt(col.g())),
+                            static_cast<float>(sqrt(col.b()))); // TODO(sdsmith): cast down
         // TODO: Getting nans
         // assert(!corrCol.is_nan());
         if (corrCol.is_nan()) {
@@ -126,15 +128,12 @@ private:
     }
 
     static void antialias(Config const& cfg, Camera const& cam, Hitable const& world,
-                   Point2D<size_t> pixel, Vec3& col)
+                   Point2D<unsigned> pixel, Vec3& col)
     {
         for (int s = 0; s < cfg.aa_sample_size; ++s) {
-            float u = static_cast<float>(pixel.x + rand_normalized()) /
-                static_cast<float>(cfg.viewport.width);
-            float v = static_cast<float>(pixel.y + rand_normalized()) /
-                static_cast<float>(cfg.viewport.height);
-            Ray r = cam.to_viewport(u, v);
-            Vec3 p = r.point(2.0f); // TODO: Should this be a constant?
+            float const u = (static_cast<float>(pixel.x) + rand_normalized()) / static_cast<float>(cfg.viewport.width);
+            float const v = (static_cast<float>(pixel.y) + rand_normalized()) / static_cast<float>(cfg.viewport.height);
+            Ray const r = cam.to_viewport(u, v);
             col += color(r, world, 0, cfg.max_ray_depth);
         }
 
@@ -143,11 +142,9 @@ private:
     }
 
     static void color_pixel(Vec3& pixel, Config const& cfg, Hitable const& world,
-                     Point2D<size_t> pos)
+                     Point2D<unsigned> pos)
     {
-        Viewport const& viewport = cfg.viewport;
-        float const dist_to_focus =
-            (cfg.eye.origin() - cfg.eye.direction()).length();
+        float const dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
         Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
                    cfg.aperture, dist_to_focus);
 
@@ -159,9 +156,9 @@ private:
     }
 
     static void color_row(std::vector<Vec3>& row, Config const& cfg, Hitable const& world,
-                          size_t pixel_y)
+                          unsigned pixel_y)
     {
-        for (size_t x = 0; x < cfg.viewport.width; ++x) {
+        for (unsigned x = 0; x < cfg.viewport.width; ++x) {
             color_pixel(row[x], cfg, world, {x, pixel_y});
         }
     }

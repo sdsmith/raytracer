@@ -31,10 +31,10 @@ public:
     // TODO(sdsmith): join threads on destruction
 
 private:
-    std::vector<std::thread> m_workers;
-    std::queue<std::function<void()>> m_job_queue;
-    std::mutex m_queue_lock;
-    std::condition_variable m_wait_cond;
+    std::vector<std::thread> m_workers = {};
+    std::queue<std::function<void()>> m_job_queue = {};
+    std::mutex m_queue_lock = {};
+    std::condition_variable m_wait_cond = {};
     std::atomic<bool> m_is_enabled{false};
     std::atomic<bool> m_stop_workers{false};
     std::atomic<size_t> m_num_waiting{0};

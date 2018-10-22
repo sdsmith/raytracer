@@ -7,7 +7,7 @@ Vec3 lerp(Vec3 const& start, Vec3 const& end, float t) {
 }
 
 float rand_normalized() {
-    return rand() / static_cast<float>(RAND_MAX);
+    return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 }
 
 Vec3 rand_in_unit_sphere() {

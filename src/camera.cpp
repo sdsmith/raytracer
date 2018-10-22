@@ -7,7 +7,7 @@
 Camera::Camera(Ray eye, Vec3 up, float vert_fov, float aspect, float aperture, float focus_dist)
 {
     float const theta = vert_fov * pi<float> / 180.0f;
-    float const half_height = tan(theta / 2);
+    float const half_height = static_cast<float>(tan(theta / 2.0f)); // TODO(sdsmith): down cast
     float const half_width = aspect * half_height;
 
     origin = eye.origin();
