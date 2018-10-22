@@ -10,7 +10,7 @@ class Thread_Pool
 {
 public:
     Thread_Pool();
-    Thread_Pool(int num_threads);
+    Thread_Pool(unsigned num_threads);
     ~Thread_Pool();
 
     Thread_Pool(Thread_Pool const& o) = delete;            // copy ctor

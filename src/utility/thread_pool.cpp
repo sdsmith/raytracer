@@ -3,7 +3,7 @@
 #include <iostream>
 
 Thread_Pool::Thread_Pool() { create_workers(std::thread::hardware_concurrency() / 2); }
-Thread_Pool::Thread_Pool(int num_threads) { create_workers(num_threads); }
+Thread_Pool::Thread_Pool(unsigned num_threads) { create_workers(num_threads); }
 Thread_Pool::~Thread_Pool() { kill_workers(); }
 
 void Thread_Pool::add_work(std::function<void()> job) {

@@ -7,7 +7,7 @@ struct Vec3
 {
 public:
     Vec3() : e{} {};
-    Vec3(float e0, float e1, float e2) : e{e0, e1, e2} {}
+    Vec3(float e0, float e1, float e2) : e{{e0, e1, e2}} {}
 
     float x() const;
     float y() const;
