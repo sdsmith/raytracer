@@ -15,12 +15,18 @@ CXXFLAGS += -Wno-unused-parameter -Wno-float-equal
 #CXXFLAGS += -Wshadow-compatible-local # CI using gcc5 w/o this flag, clang does not have this flag
 
 LDFLAGS := $(CXXFLAGS)
-# Remove -pthread from clang to avoid unsued linker flag
+# Remove -pthread from clang to avoid unused linker flag
 ifeq ($(findstring clang,$(CXX)),clang)
-LDFLAGS := $(filter-out -pthread,$(CXXFLAGS))
+# TODO: Works locally with clang++5. Fails TravisCI with:
+#     /usr/bin/ld: build/clang++/debug/src/utility/thread_pool.o: undefined reference to symbol 'pthread_setspecific@@GLIBC_2.2.5'
+# WAR by ignoring unused command line argument warning.
+#LDFLAGS := $(filter-out -pthread,$(CXXFLAGS))
+LDFLAGS := -Wunused-command-line-argument
 endif
 
+# Whitelist build types
 ifeq ($(BUILD),$(filter $(BUILD),debug release))
+# Select build directory based on compilation settings
 BUILD_DIR := $(BUILD_DIR)/$(CXX)/$(BUILD)
 else
 $(error Unknown build type)
@@ -49,7 +55,7 @@ $(BUILD_DIR)/$(EXECUTABLE): $(OBJ_FILES)
 header:
 	@echo "==== $(CXX) $(BUILD) build"
 	@echo "== $(CXX) version:"
-	$(CXX) -v
+	@$(CXX) -v
 	@echo "== build"
 
 clean:
