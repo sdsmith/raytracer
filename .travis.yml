@@ -30,6 +30,10 @@ matrix:
     - os: linux
       dist: trusty
       env: COMPILER_NAME=clang++ CXX=clang++ CC=clang CXXFLAGS="-m32 -stdlib=libc++"
+      addons:
+        apt:
+          packages:
+            - libc6-dev-i386
             
     - os: linux
       dist: trusty    
