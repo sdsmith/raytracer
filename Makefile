@@ -21,7 +21,7 @@ ifeq ($(findstring clang,$(CXX)),clang)
 #     /usr/bin/ld: build/clang++/debug/src/utility/thread_pool.o: undefined reference to symbol 'pthread_setspecific@@GLIBC_2.2.5'
 # WAR by ignoring unused command line argument warning.
 #LDFLAGS := $(filter-out -pthread,$(CXXFLAGS))
-LDFLAGS := -Wunused-command-line-argument
+LDFLAGS += -Wno-unused-command-line-argument
 endif
 
 # Whitelist build types
