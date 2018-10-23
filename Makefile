@@ -9,10 +9,18 @@ CXXFLAGS.release := -O2
 CXXFLAGS += $(CXXFLAGS.$(BUILD))
 CXXFLAGS += -Wall -Werror -Wextra -Weffc++ -Wfloat-equal -Werror-implicit-function-declaration -Wundef -Wpointer-arith -Wcast-align -Wstrict-overflow=5 -Wwrite-strings -Wno-unused-result
 CXXFLAGS += -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code # Potentially noisy and not worth it
-CXXFLAGS += -ftrapv # -fsanitize=address # asan not available on windows...
+
+## Flags that could not
+# CI using gcc5 which does not have this flag, clang does not have this flag
+#CXXFLAGS += -Wshadow-compatible-local 
+# -ftrapv on 32bit arch calls __mulodi4, leading to an undefined reference
+# See bug: https://bugs.llvm.org/show_bug.cgi?id=14469
+#CXXFLAGS += -ftrapv
+# asan not available on windows...
+#CXXFLAGS += -fsanitize=address
+
 # Warnings to ignore for now
 CXXFLAGS += -Wno-unused-parameter -Wno-float-equal
-#CXXFLAGS += -Wshadow-compatible-local # CI using gcc5 w/o this flag, clang does not have this flag
 
 LDFLAGS := $(CXXFLAGS)
 # Remove -pthread from clang to avoid unused linker flag
