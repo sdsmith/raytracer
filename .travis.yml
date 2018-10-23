@@ -6,30 +6,24 @@ matrix:
   include:
     - os: linux
       dist: trusty    
-      env: COMPILER_NAME=g++ CXX=g++-7 CC=gcc-7 ARCH=x86
+      env: COMPILER_NAME=g++ CXX=g++-7 ARCH=x86
       addons:
         apt:
           packages:
             - g++-7-multilib
             - linux-libc-dev:i386
-          sources:
-            - llvm-toolchain-precise-5.0
-            - ubuntu-toolchain-r-test
 
     - os: linux
       dist: trusty
-      env: COMPILER_NAME=g++ CXX=g++-7 CC=gcc-7 ARCH=x64
+      env: COMPILER_NAME=g++ CXX=g++-7 ARCH=x64
       addons:
         apt:
           packages:
             - g++-7
-          sources:
-            - llvm-toolchain-precise-5.0
-            - ubuntu-toolchain-r-test
 
     - os: linux
       dist: trusty
-      env: COMPILER_NAME=clang++ CXX=clang++-5.0 CC=clang-5.0 ARCH=x86 CXXFLAGS="-stdlib=libc++"
+      env: COMPILER_NAME=clang++ CXX=clang++ ARCH=x86 CXXFLAGS="-stdlib=libc++"
       addons:
         apt:
           packages:
@@ -40,7 +34,7 @@ matrix:
 
     - os: linux
       dist: trusty
-      env: COMPILER_NAME=clang++ CXX=clang++-5.0 CC=clang-5.0 ARCH=x64 CXXFLAGS="-stdlib=libc++" 
+      env: COMPILER_NAME=clang++ CXX=clang++ ARCH=x64 CXXFLAGS="-stdlib=libc++" 
       addons:
         apt:
           packages:
