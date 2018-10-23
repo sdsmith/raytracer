@@ -12,6 +12,8 @@ matrix:
           packages:
             - g++-7-multilib
             - linux-libc-dev:i386
+          sources:
+            - ubuntu-toolchain-r-test
 
     - os: linux
       dist: trusty
@@ -20,6 +22,8 @@ matrix:
         apt:
           packages:
             - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
 
     - os: linux
       dist: trusty
