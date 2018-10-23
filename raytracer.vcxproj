@@ -72,17 +72,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)build\msvc\debug\windows\x86</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath)\src;$(g3d)\G3D10\external\assimp.lib\include;$(g3d)\G3D10\external\civetweb.lib\include;$(g3d)\G3D10\external\enet.lib\include;$(g3d)\G3D10\external\freeimage.lib\include;$(g3d)\G3D10\external\glew.lib\include;$(g3d)\G3D10\external\glfw.lib\include;$(g3d)\G3D10\external\nfd.lib\include;$(g3d)\G3D10\external\qrencode.lib\include;$(g3d)\G3D10\external\zip.lib\include;$(g3d)\G3D10\external\zlib.lib\include;$(g3d)\G3D10\external\openvr\include;$(g3d)\G3D10\physx\include;$(g3d)\G3D10\G3D-base.lib\include;$(g3d)\G3D10\G3D-gfx.lib\include;$(g3d)\G3D10\G3D-app.lib\include;$(g3d)\G3D10\external\openvr\include;$(g3d)\G3D10\external\tbb\include;$(g3d)\G3D10\external\wave.lib\include;$(IncludePath)</IncludePath>
     <SourcePath>$(VC_SourcePath)\src;</SourcePath>
+    <OutDir>$(SolutionDir)build\msvc\debug\windows\x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\msvc\release\windows\x86</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\msvc\release\windows\x64</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
