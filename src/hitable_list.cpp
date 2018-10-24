@@ -1,5 +1,9 @@
 #include "hitable_list.h"
 
+void Hitable_List::add(std::unique_ptr<Hitable> hitable) {
+    m_list.push_back(std::move(hitable));
+}
+
 bool Hitable_List::hit(Ray const& r, float t_min, float t_max, Hit_Record& rec) const {
     bool is_hit = false;
     float closest_hit = t_max;
@@ -14,4 +18,8 @@ bool Hitable_List::hit(Ray const& r, float t_min, float t_max, Hit_Record& rec) 
     }
 
     return is_hit;
+}
+
+bool Hitable_List::empty() const {
+    return m_list.empty();
 }

@@ -40,9 +40,6 @@ public:
 
         srand(cfg.rand_seed);
 
-        // TODO(sdsmith): Scenes should return Hitable_List
-        Hitable_List world(scene.get());
-
         auto const time_point_start = std::chrono::system_clock::now();
         std::time_t const t_start = std::chrono::system_clock::to_time_t(time_point_start);
         std::cout << "Start time: "
@@ -59,7 +56,7 @@ public:
                 size_t const adjusted_row = frame.height() - 1 - row;
                 t_pool.add_work(std::bind(&color_row,
                                           std::ref(frame.pixels[adjusted_row]), cfg,
-                                          std::cref(world), row));
+                                          std::cref(scene.get()), row));
             }
 
             t_pool.enable();
@@ -104,10 +101,10 @@ private:
         return corrCol;
     }
 
-    static Vec3 color(Ray const& r, Hitable const& world, int depth, int max_depth) {
+    static Vec3 color(Ray const& r, Hitable const& scene, int depth, int max_depth) {
         Hit_Record rec;
 
-        if (world.hit(r, 0.0f + flop_err_thresh, std::numeric_limits<float>::max(),
+        if (scene.hit(r, 0.0f + flop_err_thresh, std::numeric_limits<float>::max(),
                        rec)) {
             assert(rec.material);
 
@@ -115,7 +112,7 @@ private:
             Vec3 attenuation;
             if (depth < max_depth &&
                 rec.material->scatter(r, rec, attenuation, scattered)) {
-                return attenuation * color(scattered, world, depth + 1, max_depth);
+                return attenuation * color(scattered, scene, depth + 1, max_depth);
             } else {
                 return Vec3(0.0f, 0.0f, 0.0f);
             }
@@ -127,21 +124,21 @@ private:
         }
     }
 
-    static void antialias(Config const& cfg, Camera const& cam, Hitable const& world,
+    static void antialias(Config const& cfg, Camera const& cam, Hitable const& scene,
                    Point2D<unsigned> pixel, Vec3& col)
     {
         for (int s = 0; s < cfg.aa_sample_size; ++s) {
             float const u = (static_cast<float>(pixel.x) + rand_normalized()) / static_cast<float>(cfg.viewport.width);
             float const v = (static_cast<float>(pixel.y) + rand_normalized()) / static_cast<float>(cfg.viewport.height);
             Ray const r = cam.to_viewport(u, v);
-            col += color(r, world, 0, cfg.max_ray_depth);
+            col += color(r, scene, 0, cfg.max_ray_depth);
         }
 
         col /= static_cast<float>(cfg.aa_sample_size);
         assert(!col.is_nan());
     }
 
-    static void color_pixel(Vec3& pixel, Config const& cfg, Hitable const& world,
+    static void color_pixel(Vec3& pixel, Config const& cfg, Hitable const& scene,
                      Point2D<unsigned> pos)
     {
         float const dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
@@ -150,16 +147,16 @@ private:
 
         pixel = {0.0f, 0.0f, 0.0f};
 
-        antialias(cfg, cam, world, pos, pixel);
+        antialias(cfg, cam, scene, pos, pixel);
 
         pixel = gamma_correction(pixel);
     }
 
-    static void color_row(std::vector<Vec3>& row, Config const& cfg, Hitable const& world,
+    static void color_row(std::vector<Vec3>& row, Config const& cfg, Hitable const& scene,
                           unsigned pixel_y)
     {
         for (unsigned x = 0; x < cfg.viewport.width; ++x) {
-            color_pixel(row[x], cfg, world, {x, pixel_y});
+            color_pixel(row[x], cfg, scene, {x, pixel_y});
         }
     }
 };

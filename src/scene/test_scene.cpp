@@ -7,20 +7,25 @@
 
 char const* Test_Scene::name() const { return "test"; }
 
-std::vector<Hitable*> const& Test_Scene::generate() {
-    m_scene.emplace_back(new Sphere({0.0f, -100.5f, -1.0f}, 100.0f,
-                                    new Lambertian({0.8f, 0.8f, 0.0f}))); // base
-    {
-        // glass sphere
-        m_scene.emplace_back(
-            new Sphere({-1.0f, 0.0f, -1.0f}, 0.5f, new Dielectric(1.5f)));
-        m_scene.emplace_back(
-            new Sphere({-1.0f, 0.0f, -1.0f}, -0.45f, new Dielectric(1.5f)));
+void Test_Scene::generate() {
+    if (!m_scene.empty()) {
+        return;
     }
-    m_scene.emplace_back(new Sphere({0.0f, 0.0f, -1.0f}, 0.5f,
-                                    new Lambertian({0.1f, 0.2f, 0.5f})));
-    m_scene.emplace_back(new Sphere({1.0f, 0.0f, -1.0f}, 0.5f,
-                                    new Metal({0.8f, 0.6f, 0.2f}, 1.0f)));
 
-    return m_scene;
+    // base
+    m_scene.add(std::make_unique<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f,
+                                         std::make_unique<Lambertian>(Vec3(0.8f, 0.8f, 0.0f))));
+    
+    { // glass sphere
+        m_scene.add(std::make_unique<Sphere>(Vec3(-1.0f, 0.0f, -1.0f), 0.5f,
+                                             std::make_unique<Dielectric>(1.5f)));
+        m_scene.add(std::make_unique<Sphere>(Vec3(-1.0f, 0.0f, -1.0f), -0.45f,
+                                             std::make_unique<Dielectric>(1.5f)));
+    }
+    
+    m_scene.add(std::make_unique<Sphere>(Vec3(0.0f, 0.0f, -1.0f), 0.5f,
+                                         std::make_unique<Lambertian>(Vec3(0.1f, 0.2f, 0.5f))));
+    
+    m_scene.add(std::make_unique<Sphere>(Vec3(1.0f, 0.0f, -1.0f), 0.5f,
+                                         std::make_unique<Metal>(Vec3(0.8f, 0.6f, 0.2f), 1.0f)));
 }

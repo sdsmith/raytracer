@@ -1,7 +1,8 @@
 #pragma once
 
-#include "hitable.h"
+#include "hitable_list.h"
 
+#include <memory>
 #include <vector>
 
 class Scene {
@@ -9,9 +10,10 @@ public:
     virtual ~Scene() {}
     
     virtual char const* name() const = 0;
-    virtual std::vector<Hitable*> const& generate() = 0;
-    std::vector<Hitable*> const& get() const;
+    virtual void generate() = 0;
+    Hitable_List const& get() const;
+    bool empty() const;
 
 protected:
-    std::vector<Hitable*> m_scene = {};
+    Hitable_List m_scene = {};
 };
