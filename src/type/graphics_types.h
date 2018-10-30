@@ -15,19 +15,20 @@ public:
 
 struct Config {
 public:
-    unsigned int rand_seed; //!< seed for randomization
-    Viewport viewport;      //!< viewport
-    Ray eye;                //!< eye position and look direction
-    Vec3 up;                //!< up direction
-    float vert_fov;         //!< vertical field of view (in degrees)
-    float aperture;         //!< aperture diameter
-    int aa_sample_size;     //!< anti-aliasing sample size per pixel
-    int max_ray_depth;      //!< max ray iterations per pixel
+    unsigned rand_seed;      //!< seed for randomization
+    Viewport viewport;       //!< viewport
+    Ray eye;                 //!< eye position and look direction
+    Vec3 up;                 //!< up direction
+    float vert_fov;          //!< vertical field of view (in degrees)
+    float aperture;          //!< aperture diameter
+    unsigned aa_sample_size; //!< anti-aliasing sample size per pixel
+    unsigned max_ray_depth;  //!< max ray iterations per pixel
 };
 
 struct RbgFrame {
 public:
-    std::vector<std::vector<Vec3>> pixels = {}; //!< [row][column]
+    using Row = std::vector<Vec3>;
+    std::vector<Row> pixels = {}; //!< [row][column]
 
     RbgFrame(unsigned height, unsigned width);    
     RbgFrame(Viewport const& viewport);

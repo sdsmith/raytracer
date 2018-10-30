@@ -10,9 +10,13 @@ class Image_Writer
 public:
     virtual ~Image_Writer() {}
     void open(std::string const& filename);
-    virtual void write(Config const& config) = 0;
-    virtual void write(RbgFrame const& frame) = 0;
     void close();
+    bool is_open() const;
+
+    void write(RbgFrame const& frame);
+    virtual void write(Config const& config) = 0;
+    virtual void write_header(RbgFrame const& frame) = 0;
+    virtual void write(RbgFrame::Row const& row) = 0;
 
 protected:
     std::ofstream m_image_file = {};

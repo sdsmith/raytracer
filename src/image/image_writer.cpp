@@ -2,6 +2,8 @@
 
 #include "utility/strutil.h"
 
+#include <cassert>
+
 void Image_Writer::open(std::string const& filename) {
     m_image_file.open(filename, std::ios::out | std::ios::trunc);
     // TODO(sdsmith): check return
@@ -12,6 +14,22 @@ void Image_Writer::close() {
     // TODO(sdsmith): check return
 }
     
+bool Image_Writer::is_open() const {
+    return m_image_file.is_open();
+}
+
+void Image_Writer::write(RbgFrame const& frame) {
+    assert(m_image_file.is_open());
+    
+    write_header(frame);
+    
+    for (auto const& row : frame.pixels) {
+        write(row);
+    }
+
+    close();
+}
+
 std::string Image_Writer::to_file_format(char const* ln_prefix, Config const& cfg) const {
     return Str_Util::format(
         "%s Seed            : %X\n"

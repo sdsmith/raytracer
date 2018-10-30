@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "hitable.h"
 #include "hitable_list.h"
+#include "image/async_image_writer.h"
 #include "image/ppm_image_writer.h"
 #include "math/ray.h"
 #include "math/vec3.h"
@@ -33,6 +34,11 @@ class Raytracer
 {
 // TODO(sdsmith): cleanup this class
 public:
+    static void async_image_gen(Async_Image_Writer& writer, RbgFrame::Row& row, Config const& cfg, Hitable const& scene, unsigned row_y) {
+        color_row(row, cfg, scene, row_y);
+        writer.buf_write(Async_Image_Writer::Buf_Entry{row_y, row});
+    }
+    
     static void start(Config const& cfg, Scene const& scene, Image_Writer& writer) {
         Viewport const& viewport = cfg.viewport;
         assert(viewport.height > 0);
@@ -48,15 +54,21 @@ public:
         {
             Thread_Pool t_pool;
             RbgFrame frame(cfg.viewport);
-
+            Async_Image_Writer async_writer(std::make_unique<Ppm_Image_Writer>());
+            async_writer.open("image.ppm");
+            async_writer.write_header(frame);
+            
             // Traverse from the viewport's lower left corner to top right corner,
             // left to right, bottom to top.
-            for (size_t row = 0; row < frame.height(); ++row) {
+            for (unsigned row = 0; row < frame.height(); ++row) {
                 // Store the image upside down so it displays correctly!
-                size_t const adjusted_row = frame.height() - 1 - row;
-                t_pool.add_work(std::bind(&color_row,
-                                          std::ref(frame.pixels[adjusted_row]), cfg,
-                                          std::cref(scene.get()), row));
+                unsigned const adjusted_row = frame.height() - 1 - row;
+                t_pool.add_work(std::bind(&async_image_gen,
+                                          std::ref(async_writer),
+                                          std::ref(frame.pixels[adjusted_row]),
+                                          std::cref(cfg),
+                                          std::cref(scene.get()),
+                                          row));
             }
 
             t_pool.enable();
@@ -66,12 +78,7 @@ public:
                 continue;
             }
 
-            // Write the resulting image
-            //
-            writer.open("image.ppm");
-            writer.write(cfg);
-            writer.write(frame);
-            writer.close();
+            async_writer.close();
         }
 
         auto const time_point_end = std::chrono::system_clock::now();
@@ -93,6 +100,7 @@ private:
         Vec3 corrCol = Vec3(static_cast<float>(sqrt(col.r())),
                             static_cast<float>(sqrt(col.g())),
                             static_cast<float>(sqrt(col.b()))); // TODO(sdsmith): cast down
+        
         // TODO: Getting nans
         // assert(!corrCol.is_nan());
         if (corrCol.is_nan()) {
@@ -101,11 +109,11 @@ private:
         return corrCol;
     }
 
-    static Vec3 color(Ray const& r, Hitable const& scene, int depth, int max_depth) {
+    static Vec3 color(Ray const& r, Hitable const& scene, unsigned depth, unsigned max_depth) {
         Hit_Record rec;
 
-        if (scene.hit(r, 0.0f + flop_err_thresh, std::numeric_limits<float>::max(),
-                       rec)) {
+        if (scene.hit(r, 0.0f + flop_err_thresh, std::numeric_limits<float>::max(), rec))
+        {
             assert(rec.material);
 
             Ray scattered;
@@ -118,8 +126,8 @@ private:
             }
         } else {
             // Background
-            Vec3 unit_direction = unit_vector(r.direction());
-            float t = 0.5f * (unit_direction.y() + 1.0f); // [-1, 1] -> [0, 1]
+            Vec3 const unit_direction = unit_vector(r.direction());
+            float const t = 0.5f * (unit_direction.y() + 1.0f); // [-1, 1] -> [0, 1]
             return lerp(Vec3(1.0f, 1.0f, 1.0f), Vec3(0.5f, 0.7f, 1.0f), t);
         }
     }
@@ -127,7 +135,7 @@ private:
     static void antialias(Config const& cfg, Camera const& cam, Hitable const& scene,
                    Point2D<unsigned> pixel, Vec3& col)
     {
-        for (int s = 0; s < cfg.aa_sample_size; ++s) {
+        for (unsigned s = 0; s < cfg.aa_sample_size; ++s) {
             float const u = (static_cast<float>(pixel.x) + rand_normalized()) / static_cast<float>(cfg.viewport.width);
             float const v = (static_cast<float>(pixel.y) + rand_normalized()) / static_cast<float>(cfg.viewport.height);
             Ray const r = cam.to_viewport(u, v);
@@ -152,7 +160,7 @@ private:
         pixel = gamma_correction(pixel);
     }
 
-    static void color_row(std::vector<Vec3>& row, Config const& cfg, Hitable const& scene,
+    static void color_row(RbgFrame::Row& row, Config const& cfg, Hitable const& scene,
                           unsigned pixel_y)
     {
         for (unsigned x = 0; x < cfg.viewport.width; ++x) {
@@ -172,7 +180,7 @@ int main() {
     cfg.aa_sample_size = 100;
     cfg.max_ray_depth = 50;
 
-    Test_Scene scene;
+    Random_Scene scene;
     scene.generate();
     Ppm_Image_Writer writer;
     Raytracer raytracer;
