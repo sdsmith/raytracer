@@ -164,6 +164,7 @@
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\hitable.h" />
     <ClInclude Include="src\hitable_list.h" />
+    <ClInclude Include="src\image\async_image_writer.h" />
     <ClInclude Include="src\image\image_writer.h" />
     <ClInclude Include="src\image\ppm_image_writer.h" />
     <ClInclude Include="src\light.h" />
@@ -185,6 +186,7 @@
   <ItemGroup>
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\hitable_list.cpp" />
+    <ClCompile Include="src\image\async_image_writer.cpp" />
     <ClCompile Include="src\image\image_writer.cpp" />
     <ClCompile Include="src\image\ppm_image_writer.cpp" />
     <ClCompile Include="src\light.cpp" />

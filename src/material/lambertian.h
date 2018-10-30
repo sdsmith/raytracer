@@ -8,10 +8,10 @@
 class Lambertian : public Material
 {
 public:
-    Lambertian(Vec3 const& albedo) : albedo(albedo) {}
+    explicit Lambertian(Vec3 const& albedo) : m_albedo(albedo) {}
 
     virtual bool scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuation, Ray& scattered) const;
 
 private:
-    Vec3 albedo;
+    Vec3 m_albedo;
 };

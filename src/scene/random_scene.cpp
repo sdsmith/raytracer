@@ -14,8 +14,8 @@ void Random_Scene::generate() {
         return;
     }
         
-    m_scene.add(std::make_unique<Sphere>(Vec3(0, -1000, 0), 1000,
-                                         std::make_unique<Lambertian>(Vec3(0.5, 0.5, 0.5))));
+    m_scene.add(std::make_unique<Sphere>(Vec3(0, -1000, 0), 1000.0f,
+                                         std::make_unique<Lambertian>(Vec3(0.5f, 0.5f, 0.5f))));
 
     for (int a = -11; a < 11; ++a) {
         for (int b = -11; b < 11; ++b) {
@@ -42,7 +42,7 @@ void Random_Scene::generate() {
                 } else {
                     // glass
                     m_scene.add(std::make_unique<Sphere>(center, 0.2f,
-                                                         std::make_unique<Dielectric>(1.5)));
+                                                         std::make_unique<Dielectric>(1.5f)));
                 }
             }
         }

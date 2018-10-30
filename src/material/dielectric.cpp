@@ -16,13 +16,13 @@ bool Dielectric::scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuati
     float cosine;
     if (dot(r_in.direction(), rec.normal) > 0) {
         outward_normal = -rec.normal;
-        ni = refractive_index;
+        ni = m_refractive_index;
         nt = 1.0f;
-        cosine = refractive_index * dot(r_in.direction(), rec.normal) / r_in.direction().length();
+        cosine = m_refractive_index * dot(r_in.direction(), rec.normal) / r_in.direction().length();
     } else {
         outward_normal = rec.normal;
         ni = 1.0f;
-        nt = refractive_index;
+        nt = m_refractive_index;
         cosine = -dot(r_in.direction(), rec.normal) / r_in.direction().length();
     }
 
@@ -32,7 +32,7 @@ bool Dielectric::scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuati
     if (refract(r_in.direction(), outward_normal, ni, nt, refracted)) {
         // Because it's dielectric, assume there is a chance of reflection
         // based on schlick's approx rather than guaranteed refraction.
-        reflect_prob = schlick(cosine, refractive_index);
+        reflect_prob = schlick(cosine, m_refractive_index);
     } else {
         reflect_prob = 1.0f;
     }
