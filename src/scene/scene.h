@@ -3,17 +3,21 @@
 #include "hitable_list.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 class Scene {
 public:
+    Scene() = default;
+    Scene(std::string name) : m_name(name) {}
     virtual ~Scene() {}
-    
-    virtual char const* name() const = 0;
+
+    std::string const name() const;
     virtual void generate() = 0;
-    Hitable_List const& get() const;
+    Hitable_List const& get() const; // TODO(sdsmith): rename get_hitables
     bool empty() const;
 
 protected:
     Hitable_List m_scene = {};
+    std::string m_name = {};
 };

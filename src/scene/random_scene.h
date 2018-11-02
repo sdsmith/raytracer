@@ -4,6 +4,6 @@
 
 class Random_Scene : public Scene {
 public:
-    char const* name() const override;
+    Random_Scene() : Scene("random") {}
     void generate() override;
 };

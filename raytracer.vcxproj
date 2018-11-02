@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\cli_arg_parser.h" />
     <ClInclude Include="src\hitable.h" />
     <ClInclude Include="src\hitable_list.h" />
     <ClInclude Include="src\image\async_image_writer.h" />
@@ -185,11 +186,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\cli_arg_parser.cpp" />
     <ClCompile Include="src\hitable_list.cpp" />
     <ClCompile Include="src\image\async_image_writer.cpp" />
     <ClCompile Include="src\image\image_writer.cpp" />
     <ClCompile Include="src\image\ppm_image_writer.cpp" />
     <ClCompile Include="src\light.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material\dielectric.cpp" />
     <ClCompile Include="src\material\lambertian.cpp" />
     <ClCompile Include="src\material\metal.cpp" />

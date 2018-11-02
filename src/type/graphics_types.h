@@ -2,7 +2,9 @@
 
 #include "math/ray.h"
 #include "math/vec3.h"
+#include "scene/scene.h"
 
+#include <memory>
 #include <ostream>
 #include <vector>
 
@@ -16,6 +18,7 @@ public:
 
 std::ostream& operator<<(std::ostream& os, Viewport const& viewport);
 
+// TODO(sdsmith): move to Raytracer
 struct Config {
 public:
     unsigned rand_seed;      //!< seed for randomization
@@ -26,6 +29,7 @@ public:
     float aperture;          //!< aperture diameter
     unsigned aa_sample_size; //!< anti-aliasing sample size per pixel
     unsigned max_ray_depth;  //!< max ray iterations per pixel
+    std::unique_ptr<Scene> scene; //!< scene to raytrace
 };
 
 std::ostream& operator<<(std::ostream& os, Config const& cfg);

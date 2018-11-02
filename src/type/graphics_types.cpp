@@ -9,7 +9,8 @@ std::ostream& operator<<(std::ostream& os, Viewport const& viewport)
 
 //------------------------------------------------------------------------------
 std::ostream& operator<<(std::ostream& os, Config const& cfg) {
-    return os << "rand_seed=" << cfg.rand_seed
+    return os << "scene=" << cfg.scene->name()
+              << ", rand_seed=" << cfg.rand_seed
               << ", viewport={" << cfg.viewport << "}"
               << ", eye={" << cfg.eye << "}"
               << ", up={" << cfg.up << "}"

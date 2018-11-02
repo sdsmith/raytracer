@@ -1,5 +1,8 @@
 #include "strutil.h"
 
+#include <limits>
+#include <stdexcept>
+
 std::string Str_Util::format(char const* fmt, ...)
 {
     va_list ap;
@@ -42,4 +45,13 @@ std::string Str_Util::vformat(char const* fmt, va_list ap)
         dynamicbuf.resize(size);
         buf = &dynamicbuf[0];
     }
+}
+
+unsigned Str_Util::string_to_unsigned(std::string const& s) noexcept(false) {
+    unsigned long const ul = std::stoul(s);
+    if (ul > std::numeric_limits<unsigned>::max()) {
+        throw std::out_of_range("");
+    }
+
+    return static_cast<unsigned>(ul);
 }

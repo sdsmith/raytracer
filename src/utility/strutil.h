@@ -9,4 +9,6 @@ namespace Str_Util
     // Ref: https://stackoverflow.com/questions/69738/c-how-to-get-fprintf-results-as-a-stdstring-w-o-sprintf#69911
     std::string format(char const* fmt, ...);
     std::string vformat(char const* fmt, va_list ap);
-}
+
+    unsigned string_to_unsigned(std::string const& s) noexcept(false);
+};

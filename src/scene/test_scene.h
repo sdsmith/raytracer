@@ -4,6 +4,6 @@
 
 class Test_Scene : public Scene {
 public:
-    char const* name() const override;
+    Test_Scene() : Scene("test") {}
     void generate() override;
 };

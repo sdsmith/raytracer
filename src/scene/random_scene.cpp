@@ -6,14 +6,12 @@
 #include "model/sphere.h"
 #include "utility/utility.h"
 
-char const* Random_Scene::name() const { return "random"; }
-
 void Random_Scene::generate() {
     // If the scene has been generated, return it
     if (!m_scene.empty()) {
         return;
     }
-        
+
     m_scene.add(std::make_unique<Sphere>(Vec3(0, -1000, 0), 1000.0f,
                                          std::make_unique<Lambertian>(Vec3(0.5f, 0.5f, 0.5f))));
 
