@@ -124,7 +124,7 @@ Vec3 Raytracer::color(Ray const& r, Hitable const& scene, unsigned depth, unsign
 }
 
 void Raytracer::antialias(Config const& cfg, Camera const& cam, Hitable const& scene,
-                                 Point2D<unsigned> pixel, Vec3& col)
+                                 Point2D<unsigned> const& pixel, Vec3& col)
 {
     for (unsigned s = 0; s < cfg.aa_sample_size; ++s) {
         float const u = (static_cast<float>(pixel.x) + rand_normalized()) / static_cast<float>(cfg.viewport.width);
@@ -138,7 +138,7 @@ void Raytracer::antialias(Config const& cfg, Camera const& cam, Hitable const& s
 }
 
 void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Hitable const& scene,
-                                   Point2D<unsigned> pos)
+                                   Point2D<unsigned> const& pos)
 {
     float const dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
     Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
