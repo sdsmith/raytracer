@@ -27,7 +27,8 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
               << "--aa_sample_size    <u>                     antialiasing sample size\n"
               << "--max_ray_depth     <u>                     maximum ray depth\n"
               << "-s --scene          <s:name>                select scene {test,random}\n"
-              << "--print_config                              print raytracer configuration\n";
+              << "--print_config                              print raytracer configuration\n"
+              << "-o --output_file    <s:filename>            output image file\n";
     //<< "--load_scene        <filename>              \n"
     //<< "--load_config       <filename>              \n";
 
@@ -80,6 +81,10 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
 
             } else if (arg == "--print_config") {
                 result.print_config = true;
+
+            } else if (arg == "-o" || arg == "--output_file") {
+                if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
+                cfg.image_file_name = cli_args.argv[++i];
 
             } else {
                 std::cerr << "unknown argument [" << i - 1 << "]: " << arg << "\n";

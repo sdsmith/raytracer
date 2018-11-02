@@ -43,7 +43,7 @@ void Raytracer::start(Config const& cfg, std::unique_ptr<Image_Writer> writer) {
         Thread_Pool t_pool;
         RbgFrame frame(cfg.viewport);
         Async_Image_Writer async_writer(std::move(writer));
-        async_writer.open("image.ppm"); // TODO(sdsmith): move image name to config
+        async_writer.open(cfg.image_file_name);
         async_writer.write_header(frame);
 
         // Traverse from the viewport's lower left corner to top right corner,
@@ -78,6 +78,10 @@ void Raytracer::start(Config const& cfg, std::unique_ptr<Image_Writer> writer) {
               << std::chrono::duration_cast<std::chrono::seconds>(
                   time_point_end - time_point_start).count()
               << "s" << std::endl;
+
+    std::cout << "Image written to " << cfg.image_file_name << "\n";
+
+    std::cout << std::endl; // Flush
 
     // TODO: cleanup memory
 }

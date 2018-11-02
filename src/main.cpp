@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
     cfg.aa_sample_size = 100;
     cfg.max_ray_depth = 50;
     cfg.scene = nullptr;
+    cfg.image_file_name = "image.ppm";
 
     parse_result.config = &cfg;
     if (!arg_parser.parse(parse_result, Cli_Arg_Parser::Args(argc, argv))) {
