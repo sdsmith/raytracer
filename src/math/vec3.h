@@ -39,7 +39,7 @@ public:
 };
 
 std::istream& operator>>(std::istream& is, Vec3& v);
-std::ostream& operator<<(std::ostream& os, Vec3& v);
+std::ostream& operator<<(std::ostream& os, Vec3 const& v);
 
 bool operator==(Vec3 const& lhs, Vec3 const& rhs);
 bool operator!=(Vec3 const& lhs, Vec3 const& rhs);

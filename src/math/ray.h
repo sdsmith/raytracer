@@ -2,17 +2,20 @@
 
 #include "vec3.h"
 
+#include <ostream>
+
 struct Ray
 {
 public:
     Ray() {};
-    Ray(Vec3 const& a, Vec3 const& b) : A(a), B(b) {}
+    Ray(Vec3 const& p1, Vec3 const& p2) : p1(p1), p2(p2) {}
 
-    Vec3 origin() const    { return A; }
-    Vec3 direction() const { return B; }
-    Vec3 point(float t) const { return A + t * B;  }
+    Vec3 origin() const;
+    Vec3 direction() const;
+    Vec3 point(float t) const;
 
-    Vec3 A = {};
-    Vec3 B = {};
+    Vec3 p1 = {};
+    Vec3 p2 = {};
 };
 
+std::ostream& operator<<(std::ostream& os, Ray const& ray);

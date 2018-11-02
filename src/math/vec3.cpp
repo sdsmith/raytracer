@@ -94,7 +94,7 @@ std::istream& operator>>(std::istream& is, Vec3& v)
     return is >> v.e[0] >> v.e[1] >> v.e[2];
 }
 
-std::ostream& operator<<(std::ostream& os, Vec3& v)
+std::ostream& operator<<(std::ostream& os, Vec3 const& v)
 {
     return os << v.e[0] << " " << v.e[1] << " " << v.e[2];
 }

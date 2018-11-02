@@ -3,6 +3,7 @@
 #include "math/ray.h"
 #include "math/vec3.h"
 
+#include <ostream>
 #include <vector>
 
 struct Viewport {
@@ -12,6 +13,8 @@ public:
 
     float aspect_ratio() const;
 };
+
+std::ostream& operator<<(std::ostream& os, Viewport const& viewport);
 
 struct Config {
 public:
@@ -25,12 +28,14 @@ public:
     unsigned max_ray_depth;  //!< max ray iterations per pixel
 };
 
+std::ostream& operator<<(std::ostream& os, Config const& cfg);
+
 struct RbgFrame {
 public:
     using Row = std::vector<Vec3>;
     std::vector<Row> pixels = {}; //!< [row][column]
 
-    RbgFrame(unsigned height, unsigned width);    
+    RbgFrame(unsigned height, unsigned width);
     RbgFrame(Viewport const& viewport);
     unsigned height() const;
     unsigned width() const;
