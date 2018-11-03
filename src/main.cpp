@@ -25,9 +25,9 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    if (parse_result.early_exit) { return 0; }
-
     if (parse_result.print_config) { std::cout << "Config: {" << cfg << "}\n"; }
+
+    if (parse_result.early_exit) { return 0; }
 
     // Default to test scene
     if (!cfg.scene) {
