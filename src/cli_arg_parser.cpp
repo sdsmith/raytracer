@@ -110,9 +110,5 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
         return false;
     }
 
-    if (is_parse_error) {
-        return false;
-    }
-
-    return true;
+    return !is_parse_error;
 }
