@@ -50,7 +50,7 @@ void Async_Image_Writer::close() {
 }
 
 void Async_Image_Writer::write_from_buf() {
-    while (m_priority_buf.top().index == m_next_index) {
+    while (!m_priority_buf.empty() && m_priority_buf.top().index == m_next_index) {
         m_writer->write(m_priority_buf.top().data);
         m_priority_buf.pop();
         m_next_index++;
