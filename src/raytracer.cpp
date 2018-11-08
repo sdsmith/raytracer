@@ -46,8 +46,7 @@ void Raytracer::start(Config const& cfg, std::unique_ptr<Image_Writer> writer) {
                                       std::ref(async_writer),
                                       std::ref(frame),
                                       row,
-                                      std::cref(cfg), // TODO(sdsmith): remove dup param
-                                      std::cref(cfg.scene->get())));
+                                      std::cref(cfg)));
         }
 
         t_pool.enable();
@@ -114,22 +113,20 @@ Vec3 Raytracer::color(Ray const& r, Hitable const& scene, unsigned depth, unsign
     }
 }
 
-void Raytracer::antialias(Config const& cfg, Camera const& cam, Hitable const& scene,
-                          Point2D<unsigned> const& pixel, Vec3& col)
+void Raytracer::antialias(Config const& cfg, Camera const& cam, Point2D<unsigned> const& pixel, Vec3& col)
 {
     for (unsigned s = 0; s < cfg.aa_sample_size; ++s) {
         float const u = (static_cast<float>(pixel.x) + rand_normalized()) / static_cast<float>(cfg.viewport.width);
         float const v = (static_cast<float>(pixel.y) + rand_normalized()) / static_cast<float>(cfg.viewport.height);
         Ray const r = cam.to_viewport(u, v);
-        col += color(r, scene, 0, cfg.max_ray_depth);
+        col += color(r, cfg.scene->get(), 0, cfg.max_ray_depth);
     }
 
     col /= static_cast<float>(cfg.aa_sample_size);
     assert(!col.is_nan());
 }
 
-void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Hitable const& scene,
-                            Point2D<unsigned> const& pos)
+void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Point2D<unsigned> const& pos)
 {
     float const dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
     Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
@@ -137,21 +134,19 @@ void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Hitable const& scene
 
     pixel = {0.0f, 0.0f, 0.0f};
 
-    antialias(cfg, cam, scene, pos, pixel);
+    antialias(cfg, cam, pos, pixel);
 
     pixel = gamma_correction(pixel);
 }
 
-void Raytracer::color_row(RbgFrame::Row& row, Config const& cfg, Hitable const& scene,
-                          unsigned image_y)
+void Raytracer::color_row(RbgFrame::Row& row, Config const& cfg, unsigned image_y)
 {
     for (unsigned x = 0; x < cfg.viewport.width; ++x) {
-        color_pixel(row[x], cfg, scene, {x, image_y});
+        color_pixel(row[x], cfg, {x, image_y});
     }
 }
 
-void Raytracer::async_image_gen(Async_Image_Writer& writer, RbgFrame& frame, unsigned row_index, Config const& cfg,
-                                Hitable const& scene)
+void Raytracer::async_image_gen(Async_Image_Writer& writer, RbgFrame& frame, unsigned row_index, Config const& cfg)
 {
     /*
      * When we write the image, we want to write the top most row first. The row
@@ -161,6 +156,6 @@ void Raytracer::async_image_gen(Async_Image_Writer& writer, RbgFrame& frame, uns
     unsigned const image_y = frame.height() - 1 - row_index;
     RbgFrame::Row& row = frame.pixels[row_index];
 
-    color_row(row, cfg, scene, image_y);
+    color_row(row, cfg, image_y);
     writer.buf_write(Async_Image_Writer::Buf_Entry{row_index, row});
 }
