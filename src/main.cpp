@@ -25,14 +25,15 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    if (parse_result.print_config) { std::cout << "Config: {" << cfg << "}\n"; }
-
-    if (parse_result.early_exit) { return 0; }
-
     // Default to test scene
     if (!cfg.scene) {
         cfg.scene = std::make_unique<Test_Scene>();
     }
+
+    // Print final config prior to raytracing
+    if (parse_result.print_config) { std::cout << "Config: {" << cfg << "}\n"; }
+
+    if (parse_result.early_exit) { return 0; }
 
     Raytracer raytracer;
     // TODO(sdsmith): image is upside down

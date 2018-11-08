@@ -13,6 +13,7 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
     assert(result.config);
 
     Config& cfg = *result.config;
+    bool is_parse_error = false;
     result.early_exit = false;
     result.print_config = false;
 
@@ -28,7 +29,8 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
               << "--max_ray_depth     <u>                     maximum ray depth\n"
               << "-s --scene          <s:name>                select scene {test,random}\n"
               << "--print_config                              print raytracer configuration\n"
-              << "-o --output_file    <s:filename>            output image file\n";
+              << "-o --output_file    <s:filename>            output image file\n"
+              << "--exit                                      exit prior to raytracing\n";
     //<< "--load_scene        <filename>              \n"
     //<< "--load_config       <filename>              \n";
 
@@ -56,7 +58,7 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
 
             } else if (arg == "--aperture") {
                 if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
-                cfg.vert_fov = std::stof(cli_args.argv[++i]);
+                cfg.aperture = std::stof(cli_args.argv[++i]);
 
             } else if (arg == "--aa_sample_size") {
                 if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
@@ -76,7 +78,7 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
                     cfg.scene = std::make_unique<Random_Scene>();
                 } else {
                     std::cerr << arg << ": unknown scene: " << scene_name << "\n";
-                    result.early_exit = true;
+                    is_parse_error = true;
                 }
 
             } else if (arg == "--print_config") {
@@ -86,20 +88,29 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
                 if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
                 cfg.image_file_name = cli_args.argv[++i];
 
+            } else if (arg == "--exit") {
+                result.early_exit = true;
+
             } else {
                 std::cerr << "unknown argument [" << i - 1 << "]: " << arg << "\n";
-                result.early_exit = true;
+                is_parse_error = true;
             }
 
             // Process next arg
             continue;
         } catch (Not_Enough_Cli_Arg_Params const&) {
             std::cerr << arg << ": invalid arg: " << arg << ": not enough parameters\n";
+            is_parse_error = true;
         } catch (std::exception const& e) {
             std::cerr << arg << ": invalid arg: " << arg << ": " << e.what() << "\n";
+            is_parse_error = true;
         }
 
         // Bad parse, return error
+        return false;
+    }
+
+    if (is_parse_error) {
         return false;
     }
 
