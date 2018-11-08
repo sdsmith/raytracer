@@ -14,7 +14,6 @@ class Raytracer
 {
 // TODO(sdsmith): cleanup this class
 public:
-    static void async_image_gen(Async_Image_Writer& writer, RbgFrame::Row& row, Config const& cfg, Hitable const& scene, unsigned row_y);
     static void start(Config const& cfg, std::unique_ptr<Image_Writer> writer);
 
 private:
@@ -25,5 +24,7 @@ private:
     static void color_pixel(Vec3& pixel, Config const& cfg, Hitable const& scene,
                             Point2D<unsigned> const& pos);
     static void color_row(RbgFrame::Row& row, Config const& cfg, Hitable const& scene,
-                          unsigned pixel_y);
+                          unsigned image_y);
+    static void async_image_gen(Async_Image_Writer& writer, RbgFrame& frame, unsigned row_index, Config const& cfg,
+                                Hitable const& scene);
 };
