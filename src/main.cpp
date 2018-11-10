@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
     if (parse_result.early_exit) { return 0; }
 
     Raytracer raytracer;
-    // TODO(sdsmith): image is upside down
     raytracer.start(cfg, std::make_unique<Ppm_Image_Writer>());
 
     return 0;
