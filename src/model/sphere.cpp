@@ -12,13 +12,11 @@ bool Sphere::hit(Ray const& r, float t_min, float t_max, Hit_Record& rec) const
     float const b = 2.0f * dot(oc, r.direction());
     float const c = dot(oc, oc) - radius * radius;
     float const discriminant = b * b - 4 * a * c;
-    
-    float root;
-    if (discriminant > 0) {
-        root = (-b - std::sqrt(discriminant)) / (2.0f * a);
-    } else {
-        root = (-b + std::sqrt(discriminant)) / (2.0f * a);
-    }
+
+    if (discriminant < 0) { return false; }
+
+    // Only consider the negative root (should be closer to the viewport)
+    float const root = (-b - std::sqrt(discriminant)) / (2.0f * a);
 
     if (t_min < root && root < t_max) {
         rec.t = root;
