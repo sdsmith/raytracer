@@ -82,11 +82,7 @@ Vec3 Raytracer::gamma_correction(Vec3 const& col) {
                         static_cast<float>(sqrt(col.g())),
                         static_cast<float>(sqrt(col.b()))); // TODO(sdsmith): cast down
 
-    // TODO: Getting nans
-    // assert(!corrCol.is_nan());
-    if (corrCol.is_nan()) {
-        corrCol = {0.0f, 0.0f, 0.0f};
-    }
+    assert(!corrCol.is_nan());
     return corrCol;
 }
 
