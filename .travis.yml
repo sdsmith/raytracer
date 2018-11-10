@@ -1,11 +1,10 @@
 # ref: https://stackoverflow.com/questions/35110123/travis-ci-with-c14-and-linux
 language: generic
-script: make
 
 matrix:
   include:
     - os: linux
-      dist: trusty    
+      dist: trusty
       env: COMPILER_NAME=g++ CXX=g++-7 ARCH=x86
       addons:
         apt:
@@ -38,8 +37,32 @@ matrix:
 
     - os: linux
       dist: trusty
-      env: COMPILER_NAME=clang++ CXX=clang++ ARCH=x64 CXXFLAGS="-stdlib=libc++" 
+      env: COMPILER_NAME=clang++ CXX=clang++ ARCH=x64 CXXFLAGS="-stdlib=libc++"
       addons:
         apt:
           packages:
             - libc++-dev
+
+    - os: linux
+      dist: trusty
+      env: BUILD=gcov COMPILER_NAME=g++ CXX=g++-7 ARCH=x64
+      addons:
+        apt:
+          packages:
+            - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
+
+install:
+  - if [ "${BUILD_TYPE}" == "gcov" -a "${TRAVIS_OS_NAME}" == "linux" ]; then
+      travis_wait pip install --user cpp-coveralls
+    fi
+
+script:
+  - make
+  - // TODO: make and run tests
+
+after_success:
+  - if [ "${BUILD_TYPE}" == "gcov" -a "${TRAVIS_OS_NAME}" == "linux" ]; then
+      coveralls --include src --gcov-options '\-lp'
+    fi

@@ -2,6 +2,12 @@ EXECUTABLE = raytracer
 BUILD ?= debug
 BUILD_DIR ?= build
 
+# Whitelist build types
+BUILD_TYPES = debug release gcov
+ifneq ($(BUILD),$(filter $(BUILD),$(BUILD_TYPES)))
+$(error Unknown build type. Use one of: $(BUILD_TYPES))
+endif
+
 ################################################################################
 # Compilation flags
 ################################################################################
@@ -11,6 +17,7 @@ CXXFLAGS += -std=c++14 -pthread
 ### Build flags
 CXXFLAGS.debug := -g -O0
 CXXFLAGS.release := -O2
+CXXFLAGS.gcov := -fprofile-arcs -ftest-coverage $(CXXFLAGS.debug)
 CXXFLAGS += $(CXXFLAGS.$(BUILD))
 
 ### Warning flags
@@ -20,7 +27,7 @@ WARN_FLAGS += -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreacha
 
 ## Flags that could not
 # CI using gcc5 which does not have this flag, clang does not have this flag
-#CXXFLAGS += -Wshadow-compatible-local 
+#CXXFLAGS += -Wshadow-compatible-local
 # -ftrapv on 32bit arch calls __mulodi4, leading to an undefined reference
 # See bug: https://bugs.llvm.org/show_bug.cgi?id=14469
 #CXXFLAGS += -ftrapv
@@ -56,13 +63,8 @@ LDFLAGS += -Wno-unused-command-line-argument
 endif
 ################################################################################
 
-# Whitelist build types
-ifeq ($(BUILD),$(filter $(BUILD),debug release))
 # Select build directory based on compilation settings
 BUILD_PATH := $(BUILD_DIR)/$(CXX)/$(BUILD)/linux/$(ARCH)
-else
-$(error Unknown build type. Use one of debug,release)
-endif
 
 SOURCE_DIR = src
 INCLUDE_DIRS := -I$(SOURCE_DIR)
@@ -70,7 +72,7 @@ CPP_FILES := $(shell find $(SOURCE_DIR) -name '*.cpp')
 OBJ_FILES = $(addprefix $(BUILD_PATH)/,$(CPP_FILES:%.cpp=%.o))
 DEP_FILES = $(OBJ_FILES:%.o=%.d)
 
-.PHONY: all header clean clean_all
+.PHONY: all header clean clean_all gcov
 
 all: header $(BUILD_PATH)/$(EXECUTABLE)
 
@@ -79,12 +81,12 @@ all: header $(BUILD_PATH)/$(EXECUTABLE)
 
 $(BUILD_PATH)/%.o: %.cpp
 	@mkdir -p $(@D)
-	@echo $@	 
+	@echo $@
 	@$(CXX) -c -o $@ $< -MMD $(INCLUDE_DIRS) $(CXXFLAGS)
 
 $(BUILD_PATH)/$(EXECUTABLE): $(OBJ_FILES)
 	@echo "== LINK"
-	@echo $@	 
+	@echo $@
 	@$(CXX) -o $@ $^ $(INCLUDE_DIRS) $(LDFLAGS)
 
 header:
