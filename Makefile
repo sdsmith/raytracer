@@ -8,9 +8,18 @@ BUILD_DIR ?= build
 CXX ?= clang++
 CXXFLAGS += -std=c++14 -pthread
 
+### Configuration flags
+TRAP_FP_FAULTS ?= false
+ifeq ($(TRAP_FP_FAULTS),true)
+    CXXFLAGS += -DTRAP_FP_FAULTS
+endif
+
+# WAR: works locally only
+CXXFLAGS += -Dcygwin
+
 ### Build flags
-CXXFLAGS.debug := -g -O0
-CXXFLAGS.release := -O2
+CXXFLAGS.debug := -DDEBUG -g -O0
+CXXFLAGS.release := -DNDEBUG -O2
 CXXFLAGS += $(CXXFLAGS.$(BUILD))
 
 ### Warning flags
@@ -20,7 +29,7 @@ WARN_FLAGS += -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreacha
 
 ## Flags that could not
 # CI using gcc5 which does not have this flag, clang does not have this flag
-#CXXFLAGS += -Wshadow-compatible-local 
+#CXXFLAGS += -Wshadow-compatible-local
 # -ftrapv on 32bit arch calls __mulodi4, leading to an undefined reference
 # See bug: https://bugs.llvm.org/show_bug.cgi?id=14469
 #CXXFLAGS += -ftrapv
@@ -79,12 +88,12 @@ all: header $(BUILD_PATH)/$(EXECUTABLE)
 
 $(BUILD_PATH)/%.o: %.cpp
 	@mkdir -p $(@D)
-	@echo $@	 
+	@echo $@
 	@$(CXX) -c -o $@ $< -MMD $(INCLUDE_DIRS) $(CXXFLAGS)
 
 $(BUILD_PATH)/$(EXECUTABLE): $(OBJ_FILES)
 	@echo "== LINK"
-	@echo $@	 
+	@echo $@
 	@$(CXX) -o $@ $^ $(INCLUDE_DIRS) $(LDFLAGS)
 
 header:

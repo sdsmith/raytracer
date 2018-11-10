@@ -4,7 +4,39 @@
 #include "scene/test_scene.h"
 #include "type/graphics_types.h"
 
+#ifdef _WIN32
+#   include <float.h>
+#elif defined(linux) || defined(cygwin)
+#   include <fenv.h>
+#endif
+
+/**
+ * \brief Trap on sNaNs produced by floating point. Does not catch qNaNs.
+ */
+bool trap_fp_faults() {
+#ifdef _WIN32
+    _clearfp();
+    unsigned control_mask = 0;
+    return _controlfp_s(&control_mask,
+                        _controlfp_s(&control_mask, 0, 0) & ~(_EM_INVALID | _EM_ZERODIVIDE | _EM_OVERFLOW),
+                        _MCW_EM) == 0;
+
+#elif defined(linux) || defined(cygwin)
+    return feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW) == 0;
+
+#elif defined(TRAP_FP_FAULTS)
+#   pragma message ("WARNING: trap_arithmetic_faults: unknown OS, FP trap not supported")
+    return false;
+#endif
+}
+
 int main(int argc, char* argv[]) {
+#if !defined(NDEBUG) && defined(TRAP_FP_FAULTS)
+    if (!trap_fp_faults()) {
+        std::cerr << "Failed to set trap for floating point unit exceptions\n";
+    }
+#endif
+
     Config cfg = {};
     Cli_Arg_Parser arg_parser;
     Cli_Arg_Parser::Result parse_result = {};
