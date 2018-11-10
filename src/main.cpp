@@ -6,7 +6,7 @@
 
 #ifdef _WIN32
 #   include <float.h>
-#elif defined(linux) || defined(cygwin)
+#elif defined(__linux__)
 #   include <fenv.h>
 #endif
 
@@ -21,7 +21,7 @@ bool trap_fp_faults() {
                         _controlfp_s(&control_mask, 0, 0) & ~(_EM_INVALID | _EM_ZERODIVIDE | _EM_OVERFLOW),
                         _MCW_EM) == 0;
 
-#elif defined(linux) || defined(cygwin)
+#elif defined(__linux__)
     return feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW) == 0;
 
 #elif defined(TRAP_FP_FAULTS)

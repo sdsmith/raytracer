@@ -14,9 +14,6 @@ ifeq ($(TRAP_FP_FAULTS),true)
     CXXFLAGS += -DTRAP_FP_FAULTS
 endif
 
-# WAR: works locally only
-CXXFLAGS += -Dcygwin
-
 ### Build flags
 CXXFLAGS.debug := -DDEBUG -g -O0
 CXXFLAGS.release := -DNDEBUG -O2
