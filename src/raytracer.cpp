@@ -36,7 +36,7 @@ void Raytracer::start(Config const& cfg, std::unique_ptr<Image_Writer> writer) {
 
     {
         Thread_Pool t_pool;
-        RbgFrame frame(cfg.viewport);
+        RbgFrame frame(viewport);
         Async_Image_Writer async_writer(std::move(writer));
         async_writer.open(cfg.image_file_name);
         async_writer.write_header(frame);
