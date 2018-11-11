@@ -34,10 +34,7 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
               << "--eye               <f:x0> <f:y0> <f:z0>, <f:x1> <f:y1> <f:z1> camera eye position\n"
               << "--up                <f:x> <f:y> <f:z>       eye up direction\n"
               << "--num_threads       <u>                     number of threads to run while raytracing\n";
-    //<< "--load_scene        <filename>              \n"
-    //<< "--load_config       <filename>              \n";
 
-    // TODO(sdsmith): support eye and up
     for (int i = 1; i < cli_args.argc; ++i) {
         std::string const arg = cli_args.argv[i];
 
@@ -128,7 +125,7 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
             } else if (arg == "--up") {
                 if (i + 3 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
                 for (int arg_num = 0; arg_num < Vec3::dimension; ++arg_num) {
-                    cfg.up.e[arg_num] = std::stof(cli_args.argv[++i]);
+                    cfg.up.e[static_cast<size_t>(arg_num)] = std::stof(cli_args.argv[++i]);
                 }
 
             } else if (arg == "--num_threads") {
