@@ -31,6 +31,7 @@ public:
     unsigned max_ray_depth;  //!< max ray iterations per pixel
     std::unique_ptr<Scene> scene; //!< scene to raytrace
     std::string image_file_name; //!< output image file name
+    unsigned num_threads;    //!< number of threads to raytrace with
 };
 
 std::ostream& operator<<(std::ostream& os, Config const& cfg);

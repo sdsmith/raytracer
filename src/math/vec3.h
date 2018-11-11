@@ -6,6 +6,8 @@
 struct Vec3
 {
 public:
+    static constexpr int dimension = 3; //!< Dimension of the vector.
+
     Vec3() : e{} {};
     Vec3(float e0, float e1, float e2) : e{{e0, e1, e2}} {}
 

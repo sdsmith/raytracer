@@ -4,6 +4,8 @@
 #include "scene/test_scene.h"
 #include "type/graphics_types.h"
 
+#include <thread>
+
 #ifdef _WIN32
 #   include <float.h>
 #elif defined(__linux__)
@@ -43,14 +45,15 @@ int main(int argc, char* argv[]) {
 
     cfg.rand_seed = 0;
     cfg.viewport = {1920, 1080};
-    cfg.eye = {{3, 3, 2}, {0, 0, -1}};
+    cfg.eye = {{-2, 2, 1}, {0, 0, -1}};
     cfg.up = {0, 1, 0};
-    cfg.vert_fov = 20;
-    cfg.aperture = 2.0f;
+    cfg.vert_fov = 30;
+    cfg.aperture = 1.0f;
     cfg.aa_sample_size = 100;
     cfg.max_ray_depth = 50;
     cfg.scene = nullptr;
     cfg.image_file_name = "image.ppm";
+    cfg.num_threads = std::thread::hardware_concurrency();
 
     parse_result.config = &cfg;
     if (!arg_parser.parse(parse_result, Cli_Arg_Parser::Args(argc, argv))) {

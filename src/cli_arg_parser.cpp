@@ -30,7 +30,10 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
               << "-s --scene          <s:name>                select scene {test,random}\n"
               << "--print_config                              print raytracer configuration\n"
               << "-o --output_file    <s:filename>            output image file\n"
-              << "--exit                                      exit prior to raytracing\n";
+              << "--exit                                      exit prior to raytracing\n"
+              << "--eye               <f:x0> <f:y0> <f:z0>, <f:x1> <f:y1> <f:z1> camera eye position\n"
+              << "--up                <f:x> <f:y> <f:z>       eye up direction\n"
+              << "--num_threads       <u>                     number of threads to run while raytracing\n";
     //<< "--load_scene        <filename>              \n"
     //<< "--load_config       <filename>              \n";
 
@@ -90,6 +93,47 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
 
             } else if (arg == "--exit") {
                 result.early_exit = true;
+
+            } else if (arg == "--eye") {
+                constexpr int num_expected_args = 6;
+                if (i + num_expected_args > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
+
+                Vec3 v;
+                for (int arg_num = 0; arg_num < num_expected_args; ++arg_num) {
+                    std::string arg(cli_args.argv[++i]);
+                    size_t comma_pos = arg.find(",");
+                    if (comma_pos != std::string::npos) {
+                        if (arg.size() == 1) {
+                            // Comma is a seperate arg (ie. ","), move to the next arg
+                            arg = cli_args.argv[++i];
+                        } else if (arg_num == 2 || arg_num == 3) {
+                            // Comma is at the start or end of a value (ie. "1,", ",1"), strip off the comma
+                            arg.erase(comma_pos, 1);
+                        } else {
+                            std::cerr << arg << ": invalid location for arg seperator ','\n";
+                            is_parse_error = true;
+                            break;
+                        }
+                    }
+
+                    v.e[arg_num % Vec3::dimension] = std::stof(arg);
+
+                    switch (arg_num) {
+                        case 2: { cfg.eye.p1 = v; v = {0,0,0}; } break;
+                        case 5: { cfg.eye.p2 = v; } break;
+                        default: break;
+                    }
+                }
+
+            } else if (arg == "--up") {
+                if (i + 3 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
+                for (int arg_num = 0; arg_num < Vec3::dimension; ++arg_num) {
+                    cfg.up.e[arg_num] = std::stof(cli_args.argv[++i]);
+                }
+
+            } else if (arg == "--num_threads") {
+                if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
+                cfg.num_threads = string_to_unsigned(cli_args.argv[++i]);
 
             } else {
                 std::cerr << "unknown argument [" << i - 1 << "]: " << arg << "\n";
