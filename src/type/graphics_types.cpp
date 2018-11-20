@@ -22,16 +22,16 @@ std::ostream& operator<<(std::ostream& os, Config const& cfg) {
 }
 
 //------------------------------------------------------------------------------
-RbgFrame::RbgFrame(unsigned height, unsigned width) {
+Rbg_Frame::Rbg_Frame(unsigned height, unsigned width) {
     pixels.reserve(height);
     for (unsigned row = 0; row < height; ++row) {
         pixels.emplace_back(width, Vec3(0.0f, 0.0f, 0.0f));
     }
 }
 
-RbgFrame::RbgFrame(Viewport const& viewport)
-    : RbgFrame(viewport.height, viewport.width) {}
+Rbg_Frame::Rbg_Frame(Viewport const& viewport)
+    : Rbg_Frame(viewport.height, viewport.width) {}
 
-unsigned RbgFrame::height() const { return static_cast<unsigned>(pixels.size()); /*TODO(sdsmith): cast down*/}
+unsigned Rbg_Frame::height() const { return static_cast<unsigned>(pixels.size()); /*TODO(sdsmith): cast down*/}
 
-unsigned RbgFrame::width() const { return static_cast<unsigned>(pixels[0].size()); /*TODO(sdsmith): cast down*/}
+unsigned Rbg_Frame::width() const { return static_cast<unsigned>(pixels[0].size()); /*TODO(sdsmith): cast down*/}

@@ -36,7 +36,7 @@ public:
 
 std::ostream& operator<<(std::ostream& os, Config const& cfg);
 
-struct RbgFrame {
+struct Rbg_Frame {
 public:
     using Row = std::vector<Vec3>;
     std::vector<Row> pixels = {}; //!< [row][column]
