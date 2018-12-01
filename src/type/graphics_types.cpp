@@ -18,7 +18,8 @@ std::ostream& operator<<(std::ostream& os, Config const& cfg) {
               << ", aperture=" << cfg.aperture
               << ", aa_sample_size=" << cfg.aa_sample_size
               << ", max_ray_depth=" << cfg.max_ray_depth
-              << ", num_threads=" << cfg.num_threads;
+              << ", num_threads=" << cfg.num_threads
+              << ", shutter_interval=" << cfg.shutter_interval;
 }
 
 //------------------------------------------------------------------------------

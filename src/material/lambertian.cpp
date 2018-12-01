@@ -9,7 +9,7 @@ bool Lambertian::scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuati
      */
 
     Vec3 target = rec.p + rec.normal + rand_in_unit_sphere();
-    scattered = Ray(rec.p, target - rec.p);
+    scattered = Ray(rec.p, target - rec.p, r_in.time);
     attenuation = m_albedo;
     return true;
 }

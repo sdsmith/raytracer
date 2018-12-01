@@ -54,6 +54,7 @@ int main(int argc, char* argv[]) {
     cfg.scene = nullptr;
     cfg.image_file_name = "image.ppm";
     cfg.num_threads = std::thread::hardware_concurrency();
+    cfg.shutter_interval = {0, 0};
 
     parse_result.config = &cfg;
     if (!arg_parser.parse(parse_result, Cli_Arg_Parser::Args(argc, argv))) {

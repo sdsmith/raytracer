@@ -13,10 +13,10 @@ public:
     void close();
     bool is_open() const;
 
-    void write(RbgFrame const& frame);
+    void write(Rbg_Frame const& frame);
     virtual void write(Config const& config) = 0;
-    virtual void write_header(RbgFrame const& frame) = 0;
-    virtual void write(RbgFrame::Row const& row) = 0;
+    virtual void write_header(Rbg_Frame const& frame) = 0;
+    virtual void write(Rbg_Frame::Row const& row) = 0;
 
 protected:
     std::ofstream m_image_file = {};

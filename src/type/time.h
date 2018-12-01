@@ -1,6 +1,11 @@
 #pragma once
 
+#include <ostream>
+#include <cmath>
+
 using Time = float;
+
+constexpr Time INVALID_TIME = NAN;
 
 struct Time_Interval {
 public:
@@ -9,3 +14,5 @@ public:
 
     Time delta() const;
 };
+
+std::ostream& operator<<(std::ostream& os, Time_Interval const& interval);

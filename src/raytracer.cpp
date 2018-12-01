@@ -36,7 +36,7 @@ void Raytracer::start(Config const& cfg, std::unique_ptr<Image_Writer> writer) {
 
     {
         Thread_Pool t_pool(cfg.num_threads);
-        RbgFrame frame(viewport);
+        Rbg_Frame frame(viewport);
         Async_Image_Writer async_writer(std::move(writer));
         async_writer.open(cfg.image_file_name);
         async_writer.write_header(frame);
@@ -126,7 +126,7 @@ void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Point2D<unsigned> co
 {
     float const dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
     Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
-               cfg.aperture, dist_to_focus);
+               cfg.aperture, dist_to_focus, cfg.shutter_interval);
 
     pixel = {0.0f, 0.0f, 0.0f};
 
@@ -135,14 +135,14 @@ void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Point2D<unsigned> co
     pixel = gamma_correction(pixel);
 }
 
-void Raytracer::color_row(RbgFrame::Row& row, Config const& cfg, unsigned image_y)
+void Raytracer::color_row(Rbg_Frame::Row& row, Config const& cfg, unsigned image_y)
 {
     for (unsigned x = 0; x < cfg.viewport.width; ++x) {
         color_pixel(row[x], cfg, {x, image_y});
     }
 }
 
-void Raytracer::async_image_gen(Async_Image_Writer& writer, RbgFrame& frame, unsigned row_index, Config const& cfg)
+void Raytracer::async_image_gen(Async_Image_Writer& writer, Rbg_Frame& frame, unsigned row_index, Config const& cfg)
 {
     /*
      * When we write the image, we want to write the top most row first. The row
@@ -150,7 +150,7 @@ void Raytracer::async_image_gen(Async_Image_Writer& writer, RbgFrame& frame, uns
      * coordinates, the top most row corresponds to the height y value.
      */
     unsigned const image_y = frame.height() - 1 - row_index;
-    RbgFrame::Row& row = frame.pixels[row_index];
+    Rbg_Frame::Row& row = frame.pixels[row_index];
 
     color_row(row, cfg, image_y);
     writer.buf_write(Async_Image_Writer::Buf_Entry{row_index, row});

@@ -32,6 +32,7 @@ public:
     std::unique_ptr<Scene> scene; //!< scene to raytrace
     std::string image_file_name; //!< output image file name
     unsigned num_threads;    //!< number of threads to raytrace with
+    Time_Interval shutter_interval; //!< time interval for the camera shutter
 };
 
 std::ostream& operator<<(std::ostream& os, Config const& cfg);
@@ -41,8 +42,8 @@ public:
     using Row = std::vector<Vec3>;
     std::vector<Row> pixels = {}; //!< [row][column]
 
-    RbgFrame(unsigned height, unsigned width);
-    RbgFrame(Viewport const& viewport);
+    Rbg_Frame(unsigned height, unsigned width);
+    Rbg_Frame(Viewport const& viewport);
     unsigned height() const;
     unsigned width() const;
 };

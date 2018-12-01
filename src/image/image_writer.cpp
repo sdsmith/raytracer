@@ -13,16 +13,16 @@ void Image_Writer::close() {
     m_image_file.close();
     // TODO(sdsmith): check return
 }
-    
+
 bool Image_Writer::is_open() const {
     return m_image_file.is_open();
 }
 
-void Image_Writer::write(RbgFrame const& frame) {
+void Image_Writer::write(Rbg_Frame const& frame) {
     assert(m_image_file.is_open());
-    
+
     write_header(frame);
-    
+
     for (auto const& row : frame.pixels) {
         write(row);
     }
