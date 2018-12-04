@@ -30,7 +30,7 @@ void Random_Scene::generate() {
                             std::make_unique<Lambertian>(Vec3(rand_normalized() * rand_normalized(),
                                                               rand_normalized() * rand_normalized(),
                                                               rand_normalized() * rand_normalized())),
-                            Time_Interval(0.0f, 1.0f)));
+                            Time_Interval(Time(0), Time(1))));
                 } else if (choose_mat < 0.95f) {
                     // metal
                     m_scene.add(std::make_unique<Sphere>(

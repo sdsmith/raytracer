@@ -135,8 +135,8 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
 
             } else if (arg == "--shutter") {
                 if (i + 2 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
-                Time const start = std::stof(cli_args.argv[++i]);
-                Time const end   = std::stof(cli_args.argv[++i]);
+                Time const start = Time(std::stof(cli_args.argv[++i]));
+                Time const end   = Time(std::stof(cli_args.argv[++i]));
                 cfg.shutter_interval = { start, end };
 
             } else {

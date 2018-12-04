@@ -71,7 +71,8 @@ $(error Unknown build type. Use one of debug,release)
 endif
 
 SOURCE_DIR = src
-INCLUDE_DIRS := -I$(SOURCE_DIR)
+LIB_DIR = libs
+INCLUDE_DIRS := -I$(SOURCE_DIR) -isystem $(LIB_DIR)/gsl/include -isystem $(LIB_DIR)/type_safe/include
 CPP_FILES := $(shell find $(SOURCE_DIR) -name '*.cpp')
 OBJ_FILES = $(addprefix $(BUILD_PATH)/,$(CPP_FILES:%.cpp=%.o))
 DEP_FILES = $(OBJ_FILES:%.o=%.d)
