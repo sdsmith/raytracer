@@ -33,7 +33,8 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
               << "--exit                                      exit prior to raytracing\n"
               << "--eye               <f:x0> <f:y0> <f:z0>, <f:x1> <f:y1> <f:z1> camera eye position\n"
               << "--up                <f:x> <f:y> <f:z>       eye up direction\n"
-              << "--num_threads       <u>                     number of threads to run while raytracing\n";
+              << "--num_threads       <u>                     number of threads to run while raytracing\n"
+              << "--shutter           <f:start> <f:end>       camera shutter interval\n";
 
     for (int i = 1; i < cli_args.argc; ++i) {
         std::string const arg = cli_args.argv[i];
@@ -131,6 +132,12 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
             } else if (arg == "--num_threads") {
                 if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
                 cfg.num_threads = string_to_unsigned(cli_args.argv[++i]);
+
+            } else if (arg == "--shutter") {
+                if (i + 2 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
+                Time const start = std::stof(cli_args.argv[++i]);
+                Time const end   = std::stof(cli_args.argv[++i]);
+                cfg.shutter_interval = { start, end };
 
             } else {
                 std::cerr << "unknown argument [" << i - 1 << "]: " << arg << "\n";

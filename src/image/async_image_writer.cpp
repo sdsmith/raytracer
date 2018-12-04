@@ -18,7 +18,7 @@ void Async_Image_Writer::write(Config const& config) {
     m_writer->write(config);
 }
 
-void Async_Image_Writer::write_header(RbgFrame const& frame) {
+void Async_Image_Writer::write_header(Rbg_Frame const& frame) {
     m_writer->write_header(frame);
 }
 
@@ -40,7 +40,7 @@ void Async_Image_Writer::buf_write(Buf_Entry&& entry) {
 
 void Async_Image_Writer::close() {
     std::lock_guard<std::mutex> lock(m_mutex);
-    
+
     if (!m_priority_buf.empty()) {
         std::cerr << "Closing buffered writer with " << m_priority_buf.size() << " entries in buffer\n";
         clear_buf();

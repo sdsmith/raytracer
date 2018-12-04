@@ -13,13 +13,13 @@ class Async_Image_Writer
 public:
     struct Buf_Entry {
         unsigned index;     //!< Write sequence number. Writes sequentially in acending order.
-        RbgFrame::Row data; //!< Image row data
+        Rbg_Frame::Row data; //!< Image row data
     };
 
     Async_Image_Writer(std::unique_ptr<Image_Writer> writer) : m_writer(std::move(writer)), m_priority_buf() {}
     void open(std::string const& filename);
     void write(Config const& config);
-    void write_header(RbgFrame const& frame);    
+    void write_header(Rbg_Frame const& frame);
     void buf_write(Buf_Entry&& entry);
     void close();
 

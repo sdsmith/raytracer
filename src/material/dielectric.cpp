@@ -37,12 +37,12 @@ bool Dielectric::scatter(Ray const& r_in, Hit_Record const& rec, Vec3& attenuati
         reflect_prob = 1.0f;
     }
     assert(0.0f <= reflect_prob && reflect_prob <= 1.0f);
-        
+
     if (rand_normalized() <= reflect_prob) {
-        scattered = Ray(rec.p, reflect(r_in.direction(), rec.normal));
+        scattered = Ray(rec.p, reflect(r_in.direction(), rec.normal), r_in.time);
     } else {
-        scattered = Ray(rec.p, refracted);
+        scattered = Ray(rec.p, refracted, r_in.time);
     }
 
-    return true;   
+    return true;
 }
