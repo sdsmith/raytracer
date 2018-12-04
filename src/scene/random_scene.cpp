@@ -3,6 +3,7 @@
 #include "material/dielectric.h"
 #include "material/lambertian.h"
 #include "material/metal.h"
+#include "model/moving_sphere.h"
 #include "model/sphere.h"
 #include "utility/utility.h"
 
@@ -23,20 +24,21 @@ void Random_Scene::generate() {
             if ((center - Vec3(4.0f, 0.2f, 0.0f)).length() > 0.9f) {
                 if (choose_mat < 0.8f) {
                     // diffuse
-                    m_scene.add(std::make_unique<Sphere>(
-                                    center, 0.2f,
-                                    std::make_unique<Lambertian>(
-                                        Vec3(rand_normalized() * rand_normalized(),
-                                             rand_normalized() * rand_normalized(),
-                                             rand_normalized() * rand_normalized()))));
+                    m_scene.add(
+                        std::make_unique<Moving_Sphere>(
+                            center, center + Vec3(0.0f, 0.5f * rand_normalized(), 0.0f), 0.2f,
+                            std::make_unique<Lambertian>(Vec3(rand_normalized() * rand_normalized(),
+                                                              rand_normalized() * rand_normalized(),
+                                                              rand_normalized() * rand_normalized())),
+                            Time_Interval(0.0f, 1.0f)));
                 } else if (choose_mat < 0.95f) {
                     // metal
-                    m_scene.add(
-                        std::make_unique<Sphere>(center, 0.2f,
-                                                 std::make_unique<Metal>(Vec3(0.5f * (1 + rand_normalized()),
-                                                                              0.5f * (1 + rand_normalized()),
-                                                                              0.5f * (1 + rand_normalized())),
-                                                     0.5f * rand_normalized())));
+                    m_scene.add(std::make_unique<Sphere>(
+                                    center, 0.2f,
+                                    std::make_unique<Metal>(Vec3(0.5f * (1 + rand_normalized()),
+                                                                 0.5f * (1 + rand_normalized()),
+                                                                 0.5f * (1 + rand_normalized())),
+                                                            0.5f * rand_normalized())));
                 } else {
                     // glass
                     m_scene.add(std::make_unique<Sphere>(center, 0.2f,

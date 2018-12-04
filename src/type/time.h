@@ -9,9 +9,11 @@ constexpr Time INVALID_TIME = NAN;
 
 struct Time_Interval {
 public:
-    Time start;
-    Time end;
+    Time start = INVALID_TIME;
+    Time end = INVALID_TIME;
 
+    Time_Interval() {}
+    Time_Interval(Time start, Time end) : start(start), end(end) {}
     Time delta() const;
 };
 

@@ -27,7 +27,7 @@ Camera::Camera(Ray eye, Vec3 up, float vert_fov, float aspect, float aperture, f
 Ray Camera::to_viewport(float s, float t) const {
     Vec3 const lens_pos = m_lens_radius * rand_in_unit_disk();
     Vec3 const offset = m_u * lens_pos.x() + m_v * lens_pos.y();
-    Time const time = m_shutter_window.start + static_cast<float>(rand()) * m_shutter_window.delta();
+    Time const time = m_shutter_window.start + static_cast<float>(rand_normalized()) * m_shutter_window.delta();
 
     return Ray(m_origin + offset,
                m_lower_left_corner + s * m_horizontal + t * m_vertical - m_origin - offset,
