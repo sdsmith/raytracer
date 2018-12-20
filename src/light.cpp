@@ -19,7 +19,7 @@ Vec3 reflect(Vec3 const& v, Vec3 const& n) {
 */
 bool refract(Vec3 const& v, Vec3 const& n, float ni, float nt, Vec3& refracted) {
     /*
-     * Using Snell's law. 
+     * Using Snell's law.
      */
     assert(float_eq(n.length(), 1.0f));
 
