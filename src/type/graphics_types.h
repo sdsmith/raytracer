@@ -27,6 +27,7 @@ public:
     Vec3 up;                 //!< up direction
     float vert_fov;          //!< vertical field of view (in degrees)
     float aperture;          //!< aperture diameter
+    float dist_to_focus;     //!< camera focus distance
     unsigned aa_sample_size; //!< anti-aliasing sample size per pixel
     unsigned max_ray_depth;  //!< max ray iterations per pixel
     std::unique_ptr<Scene> scene; //!< scene to raytrace

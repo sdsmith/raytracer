@@ -49,6 +49,7 @@ int main(int argc, char* argv[]) {
     cfg.up = {0, 1, 0};
     cfg.vert_fov = 30;
     cfg.aperture = 1.0f;
+    cfg.dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
     cfg.aa_sample_size = 100;
     cfg.max_ray_depth = 50;
     cfg.scene = nullptr;

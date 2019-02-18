@@ -124,9 +124,8 @@ void Raytracer::antialias(Config const& cfg, Camera const& cam, Point2D<unsigned
 
 void Raytracer::color_pixel(Vec3& pixel, Config const& cfg, Point2D<unsigned> const& pos)
 {
-    float const dist_to_focus = (cfg.eye.origin() - cfg.eye.direction()).length();
     Camera cam(cfg.eye, cfg.up, cfg.vert_fov, cfg.viewport.aspect_ratio(),
-               cfg.aperture, dist_to_focus, cfg.shutter_interval);
+               cfg.aperture, cfg.dist_to_focus, cfg.shutter_interval);
 
     pixel = {0.0f, 0.0f, 0.0f};
 

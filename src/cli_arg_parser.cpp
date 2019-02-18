@@ -25,6 +25,7 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
               << "--rand_seed         <u:seed>                randomization seed\n"
               << "--vert_fov          <f:degree>              vertical field of view in degrees\n"
               << "--aperture          <f:diameter>            camera aperture diameter\n"
+              << "--dist_to_focus     <f>                     camera focus distance\n"
               << "--aa_sample_size    <u>                     antialiasing sample size\n"
               << "--max_ray_depth     <u>                     maximum ray depth\n"
               << "-s --scene          <s:name>                select scene {test,random}\n"
@@ -60,6 +61,10 @@ bool Cli_Arg_Parser::parse(Result& result, Args cli_args) noexcept(false) {
             } else if (arg == "--aperture") {
                 if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
                 cfg.aperture = std::stof(cli_args.argv[++i]);
+
+            } else if (arg == "--dist_to_focus") {
+                if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
+                cfg.dist_to_focus = std::stof(cli_args.argv[++i]);
 
             } else if (arg == "--aa_sample_size") {
                 if (i + 1 > cli_args.argc) { throw Not_Enough_Cli_Arg_Params(); }
